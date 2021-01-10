@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/res"/>
+    <qresource prefix="/">
+        <file>res/data-encryption.png</file>
+        <file>res/png-video.png</file>
+    </qresource>
+</RCC>
