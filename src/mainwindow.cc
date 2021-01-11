@@ -197,6 +197,7 @@ MainWindow::setMainMenu()
 
     about->addAction(aboutApp);
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
+    connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
@@ -229,4 +230,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         return true;
     }
     return QObject::eventFilter(obj, event);
+}
+
+void
+MainWindow::encryptAfter()
+{
+    auto list = treeView->selectionModel()->selectedIndexes();
+    testfunc1(list);
 }

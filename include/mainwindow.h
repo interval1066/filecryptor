@@ -44,6 +44,8 @@ class MainWindow : public QMainWindow
     void aboutCryptor(void);
     bool eventFilter(QObject*, QEvent*) override;
 
+    void encryptAfter(void);
+
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();

@@ -1,7 +1,7 @@
 #ifndef AESNIKEYEXP_H
 #define AESNIKEYEXP_H
 
-#include <wmmintrin.h>
+//#include <wmmintrin.h>
 
 #define cpuid(func, ax, bx, cx, dx)\
     __asm__ __volatile__("cpuid": "=a" (ax), "=b" (bx), "=c" (cx), "=d" (dx) : "a" (func));
