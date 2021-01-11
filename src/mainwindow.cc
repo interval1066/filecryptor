@@ -69,9 +69,7 @@ MainWindow::initUI()
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     treeView->setMouseTracking(true);
-
-    MoveEventFilter* filter = new MoveEventFilter();
-    treeView->installEventFilter(filter);
+    treeView->installEventFilter(this);
 
     connect(treeView, &QTreeView::clicked, this, &MainWindow::onSelected);
     connect(treeView, &QWidget::customContextMenuRequested, this,
@@ -83,6 +81,16 @@ MainWindow::onSelected(QModelIndex index)
 {
     statusBar->showMessage(const_cast<QStandardItem*>
         (itemModel->itemFromIndex(index))->accessibleDescription());
+
+    auto list = treeView->selectionModel()->selectedIndexes();
+    if(list.size() < 1) {
+        encryptItems->setDisabled(true);
+        decryptItems->setDisabled(true);
+    }
+    else {
+        encryptItems->setDisabled(false);
+        decryptItems->setDisabled(false);
+    }
 }
 
 void
@@ -102,6 +110,8 @@ MainWindow::onCustomContextMenu(const QPoint& point)
     if(list.size() < 1) {
         action->setDisabled(true);
         action1->setDisabled(true);
+        encryptItems->setDisabled(true);
+        decryptItems->setDisabled(true);
     }
 
     QModelIndex index = treeView->indexAt(point);
@@ -131,6 +141,8 @@ void
 MainWindow::clearSelected()
 {
     treeView->selectionModel()->clearSelection();
+    encryptItems->setDisabled(true);
+    decryptItems->setDisabled(true);
 }
 
 void
@@ -161,20 +173,22 @@ MainWindow::setMainMenu()
     file->addAction(quit);
 
     QMenu* encrypt = menuBar()->addMenu("&Encryption");
-    auto* encryptItems = new QAction("&Encrypt Selected", this);
+    encryptItems = new QAction("&Encrypt Selected", this);
     encrypt->addAction(encryptItems);
 
-    auto* decryptItems = new QAction("&Decrypt Selected ", this);
+    encryptItems->setDisabled(true);
+    decryptItems = new QAction("&Decrypt Selected ", this);
     encrypt->addAction(decryptItems);
+
+    decryptItems->setDisabled(true);
     encrypt->addSeparator();
-
     auto* prefs = new QAction("&Preferences", this);
-    encrypt->addAction(prefs);
 
+    encrypt->addAction(prefs);
     QMenu* about = menuBar()->addMenu("&About");
     auto* aboutApp = new QAction("&About Encyrptor", this);
-    about->addAction(aboutApp);
 
+    about->addAction(aboutApp);
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
@@ -187,4 +201,22 @@ MainWindow::aboutCryptor()
 
     if(about->exec() == QDialog::Accepted)
         about->close();
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    auto list = treeView->selectionModel()->selectedIndexes();
+    if (event->type() == QEvent::MouseMove ){
+        if(list.size() < 1) {
+            encryptItems->setDisabled(true);
+            decryptItems->setDisabled(true);
+        }
+        else {
+            encryptItems->setDisabled(false);
+            decryptItems->setDisabled(false);
+        }
+        return true;
+    }
+
+    return QObject::eventFilter(obj, event);
 }

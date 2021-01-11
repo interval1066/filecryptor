@@ -14,6 +14,7 @@
 #include "encryptitemmodel.h"
 #include "pwdlg.h"
 #include "aboutdlg.h"
+#include "movefilter.h"
 
 class MainWindow : public QMainWindow
 {
@@ -31,6 +32,8 @@ class MainWindow : public QMainWindow
     QStatusBar* statusBar;
     QAction* aboutAct;
 
+    QAction* encryptItems;
+    QAction* decryptItems;
     int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
@@ -39,6 +42,7 @@ class MainWindow : public QMainWindow
 
     void setMainMenu(void);
     void aboutCryptor(void);
+    bool eventFilter(QObject*, QEvent*);
 
 public:
     MainWindow(QWidget *parent = 0);
@@ -46,6 +50,7 @@ public:
     void initUI();
 
     friend EncryptItemModel;
+    friend MoveEventFilter;
 
 private slots:
     void onSelected(QModelIndex index);
