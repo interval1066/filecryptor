@@ -1,5 +1,5 @@
-#ifndef DIALOG_H
-#define DIALOG_H
+#ifndef PROFSDLG_H_
+#define PROFSDLG_H_
 
 #include <QDialog>
 
@@ -9,18 +9,15 @@ class QDialogButtonBox;
 class QGroupBox;
 class QLabel;
 class QPushButton;
-class QTextEdit;
+class QLineEdit;
 class QCheckBox;
+class QPushButton;
 QT_END_NAMESPACE
 
 class ProfsDlg : public QDialog
 {
     Q_OBJECT
 
-public:
-    ProfsDlg();
-
-private:
     void createHorizontalGroupBox();
     void createGridGroupBox();
 
@@ -28,12 +25,19 @@ private:
 
     QGroupBox *horizontalGroupBox;
     QGroupBox *gridGroupBox;
-    QTextEdit *smallEditor;
-    QCheckBox* saveOriginal;
-    QTextEdit *bigEditor;
     QLabel *labels[NumGridRows];
+
     QPushButton *buttons[NumButtons];
     QDialogButtonBox *buttonBox;
+    QPushButton* dirSelect;
+
+    QLineEdit* dirEdit;
+
+public:
+    ProfsDlg();
+
+private slots:
+    void enableTargetDir(bool);
 };
 
-#endif // DIALOG_H
+#endif
