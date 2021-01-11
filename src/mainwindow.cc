@@ -69,7 +69,7 @@ MainWindow::initUI()
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
     treeView->setMouseTracking(true);
-    treeView->installEventFilter(this);
+    treeView->viewport()->installEventFilter(this);
 
     connect(treeView, &QTreeView::clicked, this, &MainWindow::onSelected);
     connect(treeView, &QWidget::customContextMenuRequested, this,
@@ -214,7 +214,7 @@ MainWindow::aboutCryptor()
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     auto list = treeView->selectionModel()->selectedIndexes();
-    if (event->type() == QEvent::MouseMove ) {
+    if (event->type() == QEvent::MouseMove) {
         if(list.size() < 1) {
 
             encryptItems->setDisabled(true);
@@ -228,6 +228,5 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         }
         return true;
     }
-
     return QObject::eventFilter(obj, event);
 }
