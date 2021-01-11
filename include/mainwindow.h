@@ -13,6 +13,7 @@
 #include "encryptitemmodel.h"
 #include "pwdlg.h"
 #include "aboutdlg.h"
+#include "profsdlg.h"
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +35,7 @@ class MainWindow : public QMainWindow
     QAction* decryptItems;
     QAction* clearItems;
 
+    std::unique_ptr<ProfsDlg> profdialog;
     int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
@@ -45,6 +47,7 @@ class MainWindow : public QMainWindow
     bool eventFilter(QObject*, QEvent*) override;
 
     void encryptAfter(void);
+    void profile(void);
 
 public:
     MainWindow(QWidget *parent = 0);

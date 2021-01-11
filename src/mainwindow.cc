@@ -12,6 +12,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
+      profdialog(std::make_unique<ProfsDlg>()),
       _winx(600), _winy(480)
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
@@ -189,7 +190,7 @@ MainWindow::setMainMenu()
     encrypt->addAction(clearItems);
 
     encrypt->addSeparator();
-    auto* prefs = new QAction("&Preferences", this);
+    auto* prefs = new QAction("Encryption &Profile", this);
 
     encrypt->addAction(prefs);
     QMenu* about = menuBar()->addMenu("&About");
@@ -199,6 +200,7 @@ MainWindow::setMainMenu()
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
+    connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
 
@@ -212,7 +214,8 @@ MainWindow::aboutCryptor()
         about->close();
 }
 
-bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+bool
+MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     auto list = treeView->selectionModel()->selectedIndexes();
     if (event->type() == QEvent::MouseMove) {
@@ -237,4 +240,10 @@ MainWindow::encryptAfter()
 {
     auto list = treeView->selectionModel()->selectedIndexes();
     testfunc1(list);
+}
+
+void
+MainWindow::profile()
+{
+    profdialog->exec();
 }

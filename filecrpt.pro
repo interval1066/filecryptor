@@ -10,6 +10,7 @@ SOURCES += \
     src/encryptitemmodel.cc \
     src/main.cc \
     src/mainwindow.cc \
+    src/profsdlg.cc \
     src/pwdlg.cc \
     src/qaesencryption.cc
 
@@ -20,6 +21,7 @@ HEADERS += \
     include/aesni/aesni-key-exp.h \
     include/encryptitemmodel.h \
     include/mainwindow.h \
+    include/profsdlg.h \
     include/pwdlg.h \
     include/qaesencryption.h
 
