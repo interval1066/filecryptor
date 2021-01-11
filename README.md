@@ -1,2 +1,2 @@
 # filecryptor
-Simple, per item encryption application in Qt
+Simple, per item encryption application in Qt for Linux
