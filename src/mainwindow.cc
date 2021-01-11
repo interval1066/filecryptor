@@ -86,10 +86,12 @@ MainWindow::onSelected(QModelIndex index)
     if(list.size() < 1) {
         encryptItems->setDisabled(true);
         decryptItems->setDisabled(true);
+        clearItems->setDisabled(true);
     }
     else {
         encryptItems->setDisabled(false);
         decryptItems->setDisabled(false);
+        clearItems->setDisabled(false);
     }
 }
 
@@ -112,6 +114,7 @@ MainWindow::onCustomContextMenu(const QPoint& point)
         action1->setDisabled(true);
         encryptItems->setDisabled(true);
         decryptItems->setDisabled(true);
+        clearItems->setDisabled(true);
     }
 
     QModelIndex index = treeView->indexAt(point);
@@ -143,6 +146,7 @@ MainWindow::clearSelected()
     treeView->selectionModel()->clearSelection();
     encryptItems->setDisabled(true);
     decryptItems->setDisabled(true);
+    clearItems->setDisabled(true);
 }
 
 void
@@ -181,6 +185,9 @@ MainWindow::setMainMenu()
     encrypt->addAction(decryptItems);
 
     decryptItems->setDisabled(true);
+    clearItems = new QAction("&Clear Selected ", this);
+    encrypt->addAction(clearItems);
+
     encrypt->addSeparator();
     auto* prefs = new QAction("&Preferences", this);
 
@@ -190,6 +197,7 @@ MainWindow::setMainMenu()
 
     about->addAction(aboutApp);
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
+    connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
 
@@ -206,14 +214,17 @@ MainWindow::aboutCryptor()
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     auto list = treeView->selectionModel()->selectedIndexes();
-    if (event->type() == QEvent::MouseMove ){
+    if (event->type() == QEvent::MouseMove ) {
         if(list.size() < 1) {
+
             encryptItems->setDisabled(true);
             decryptItems->setDisabled(true);
+            clearItems->setDisabled(true);
         }
         else {
             encryptItems->setDisabled(false);
             decryptItems->setDisabled(false);
+            clearItems->setDisabled(false);
         }
         return true;
     }

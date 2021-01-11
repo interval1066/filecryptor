@@ -20,7 +20,6 @@ HEADERS += \
     include/aesni/aesni-key-exp.h \
     include/encryptitemmodel.h \
     include/mainwindow.h \
-    include/movefilter.h \
     include/pwdlg.h \
     include/qaesencryption.h
 
