@@ -2,6 +2,7 @@
 #define PROFSDLG_H_
 
 #include <QDialog>
+#include "profile.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -18,23 +19,20 @@ class ProfsDlg : public QDialog
 {
     Q_OBJECT
 
-    void createHorizontalGroupBox();
-    void createGridGroupBox();
-
-    enum { NumGridRows = 3, NumButtons = 4 };
-
     QGroupBox *horizontalGroupBox;
     QGroupBox *gridGroupBox;
-    QLabel *labels[NumGridRows];
-
-    QPushButton *buttons[NumButtons];
     QDialogButtonBox *buttonBox;
-    QPushButton* dirSelect;
 
+    QPushButton* dirSelect;
     QLineEdit* dirEdit;
+    void createHorizontalGroupBox();
+
+    void createGridGroupBox();
+    void populateProfile(void);
+    encryptor::tPROFILE* _prof;
 
 public:
-    ProfsDlg(QWidget *parent = nullptr);
+    ProfsDlg(encryptor::tPROFILE&, QWidget *parent = nullptr);
 
 private slots:
     void enableTargetDir(bool);

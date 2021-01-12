@@ -1,9 +1,10 @@
 #include <QtWidgets>
 #include "include/profsdlg.h"
 
-ProfsDlg::ProfsDlg(QWidget *parent)
+ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget *parent)
     : QDialog(parent)
 {
+    _prof = &prof;
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel, this);
@@ -20,7 +21,8 @@ ProfsDlg::ProfsDlg(QWidget *parent)
     setWindowTitle(tr("filecryptor"));
 }
 
-void ProfsDlg::createGridGroupBox()
+void
+ProfsDlg::createGridGroupBox()
 {
     QRadioButton* radio1 = new QRadioButton(tr("ECB mode"), this);
     QRadioButton* radio2 = new QRadioButton(tr("CBC mode"), this);
@@ -58,8 +60,15 @@ void ProfsDlg::createGridGroupBox()
     connect(targetDir, &QCheckBox::clicked, this, &ProfsDlg::enableTargetDir);
 }
 
-void ProfsDlg::enableTargetDir(bool bEnable)
+void
+ProfsDlg::enableTargetDir(bool bEnable)
 {
     dirSelect->setEnabled(bEnable);
     dirEdit->setEnabled(bEnable);
+}
+
+void
+ProfsDlg::populateProfile()
+{
+    //_prof->
 }

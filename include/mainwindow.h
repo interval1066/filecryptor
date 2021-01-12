@@ -14,22 +14,7 @@
 #include "pwdlg.h"
 #include "aboutdlg.h"
 #include "profsdlg.h"
-
-namespace encryptor
-{
-    enum tAESMODES
-    {
-        MODE_ECB = 0, MODE_CBC = 1, MODE_CFB = 2, MODE_OFB = 3, ODE_CTR = 4
-    };
-
-    struct tPROFILE
-    {
-        tAESMODES mode;
-        qint32 preserveFile;
-        qint32 setTargetDir;
-        QString targetDir;
-    };
-}
+#include "profile.h"
 
 class MainWindow : public QMainWindow
 {

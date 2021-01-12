@@ -21,6 +21,7 @@ HEADERS += \
     include/aesni/aesni-key-exp.h \
     include/encryptitemmodel.h \
     include/mainwindow.h \
+    include/profile.h \
     include/profsdlg.h \
     include/pwdlg.h \
     include/qaesencryption.h
