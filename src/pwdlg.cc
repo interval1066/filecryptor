@@ -6,11 +6,11 @@ PWDialog::PWDialog()
 {
     createFormGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                     | QDialogButtonBox::Cancel, this);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     mainLayout->addWidget(formGroupBox);
     mainLayout->addWidget(buttonBox);
@@ -28,8 +28,8 @@ PWDialog::createFormGroupBox()
     formGroupBox = new QGroupBox();
     QFormLayout *layout = new QFormLayout;
 
-    layout->addRow(new QLabel(tr("Enter password:")), new QLineEdit);
-    layout->addRow(new QLabel(tr("Confirm password:")), new QLineEdit);
+    layout->addRow(new QLabel(tr("Enter password:")), new QLineEdit(this));
+    layout->addRow(new QLabel(tr("Confirm password:")), new QLineEdit(this));
 
     formGroupBox->setLayout(layout);
 }

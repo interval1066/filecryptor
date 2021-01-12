@@ -5,12 +5,12 @@ ProfsDlg::ProfsDlg()
 {
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                     | QDialogButtonBox::Cancel, this);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout;
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(gridGroupBox);
     mainLayout->addWidget(buttonBox);
     setLayout(mainLayout);
@@ -21,15 +21,15 @@ ProfsDlg::ProfsDlg()
 
 void ProfsDlg::createGridGroupBox()
 {
-    QRadioButton* radio1 = new QRadioButton(tr("ECB mode"));
-    QRadioButton* radio2 = new QRadioButton(tr("CBC mode"));
-    QRadioButton* radio3 = new QRadioButton(tr("CFB mode"));
+    QRadioButton* radio1 = new QRadioButton(tr("ECB mode"), this);
+    QRadioButton* radio2 = new QRadioButton(tr("CBC mode"), this);
+    QRadioButton* radio3 = new QRadioButton(tr("CFB mode"), this);
 
-    QRadioButton* radio4 = new QRadioButton(tr("OFB mode"));
-    QRadioButton* radio5 = new QRadioButton(tr("CTR mode"));
-    gridGroupBox = new QGroupBox(tr("Encryption Profile"));
+    QRadioButton* radio4 = new QRadioButton(tr("OFB mode"), this);
+    QRadioButton* radio5 = new QRadioButton(tr("CTR mode"), this);
+    gridGroupBox = new QGroupBox(tr("Encryption Profile"), this);
 
-    QGridLayout *layout = new QGridLayout;
+    QGridLayout *layout = new QGridLayout(this);
     layout->addWidget(radio1, 1, 0);
     layout->addWidget(radio2, 2, 0, Qt::AlignLeft);
 
@@ -38,18 +38,18 @@ void ProfsDlg::createGridGroupBox()
     layout->addWidget(radio5, 5, 0, Qt::AlignLeft);
 
     radio1->setChecked(true);
-    QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"));
+    QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"), this);
     layout->addWidget(saveOriginal, 1, 2, 1, 1);
 
-    QCheckBox* targetDir = new QCheckBox(tr("Encrypted files will go here"));
+    QCheckBox* targetDir = new QCheckBox(tr("Encrypted files will go here"), this);
     layout->addWidget(targetDir, 2, 2, 1, 2);
     targetDir->setChecked(false);
 
-    dirSelect = new QPushButton(tr("Select Directory"));
+    dirSelect = new QPushButton(tr("Select Directory"), this);
     layout->addWidget(dirSelect, 3, 2, 1, 1);
     dirSelect->setEnabled(false);
 
-    dirEdit = new QLineEdit;
+    dirEdit = new QLineEdit(this);
     layout->addWidget(dirEdit, 4, 2, 1, 1);
     dirEdit->setEnabled(false);
 

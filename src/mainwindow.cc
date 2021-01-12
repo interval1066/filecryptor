@@ -61,7 +61,7 @@ MainWindow::initUI()
     itemModel = new EncryptItemModel();
 
     itemModel->setModelDetails(QDir::homePath());
-    treeView = new QTreeView();
+    treeView = new QTreeView(this);
     treeView->setModel(itemModel);
 
     treeView->setSelectionMode(QTreeView::MultiSelection);
