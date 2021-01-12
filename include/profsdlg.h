@@ -29,10 +29,10 @@ class ProfsDlg : public QDialog
 
     void createGridGroupBox();
     void populateProfile(void);
-    encryptor::tPROFILE* _prof;
+    encryptor::Profile* _prof;
 
 public:
-    ProfsDlg(encryptor::tPROFILE&, QWidget *parent = nullptr);
+    ProfsDlg(encryptor::Profile* prof, QWidget *parent = nullptr);
 
 private slots:
     void enableTargetDir(bool);

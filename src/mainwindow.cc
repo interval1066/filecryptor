@@ -12,8 +12,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      _profile(std::make_unique<encryptor::tPROFILE>()),
-      _profdialog(std::make_unique<ProfsDlg>(_profile)),
+      _profile(std::make_unique<encryptor::Profile>()),
+      _profdialog(std::make_unique<ProfsDlg>(_profile.get())),
       _pwdlg(std::make_unique<PWDialog>()),
       _winx(600), _winy(480)
 {

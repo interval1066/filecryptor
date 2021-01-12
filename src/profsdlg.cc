@@ -1,10 +1,10 @@
 #include <QtWidgets>
 #include "include/profsdlg.h"
 
-ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget *parent)
+ProfsDlg::ProfsDlg(encryptor::Profile* prof, QWidget *parent)
     : QDialog(parent)
 {
-    _prof = &prof;
+    _prof = prof;
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel, this);
@@ -70,5 +70,5 @@ ProfsDlg::enableTargetDir(bool bEnable)
 void
 ProfsDlg::populateProfile()
 {
-    //_prof->
+    //_prof->mode =
 }
