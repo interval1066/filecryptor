@@ -2,7 +2,8 @@
 
 #include "include/pwdlg.h"
 
-PWDialog::PWDialog()
+PWDialog::PWDialog(QWidget *parent)
+    : QDialog(parent)
 {
     createFormGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
@@ -25,8 +26,8 @@ PWDialog::PWDialog()
 void
 PWDialog::createFormGroupBox()
 {
-    formGroupBox = new QGroupBox();
-    QFormLayout *layout = new QFormLayout;
+    formGroupBox = new QGroupBox(this);
+    QFormLayout *layout = new QFormLayout(this);
 
     layout->addRow(new QLabel(tr("Enter password:")), new QLineEdit(this));
     layout->addRow(new QLabel(tr("Confirm password:")), new QLineEdit(this));

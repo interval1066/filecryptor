@@ -1,11 +1,12 @@
 #include <QtWidgets>
 #include "include/profsdlg.h"
 
-ProfsDlg::ProfsDlg()
+ProfsDlg::ProfsDlg(QWidget *parent)
+    : QDialog(parent)
 {
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel, this);
+        | QDialogButtonBox::Cancel, this);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

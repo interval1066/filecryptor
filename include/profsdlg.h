@@ -34,7 +34,7 @@ class ProfsDlg : public QDialog
     QLineEdit* dirEdit;
 
 public:
-    ProfsDlg();
+    ProfsDlg(QWidget *parent = nullptr);
 
 private slots:
     void enableTargetDir(bool);

@@ -12,6 +12,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
+      _profile(std::make_unique<encryptor::tPROFILE>()),
       _profdialog(std::make_unique<ProfsDlg>()),
       _pwdlg(std::make_unique<PWDialog>()),
       _winx(600), _winy(480)
@@ -209,8 +210,6 @@ void
 MainWindow::aboutCryptor()
 {
     AboutDlg* about = new AboutDlg;
-    about->setAttribute(Qt::WA_DeleteOnClose);
-
     if(about->exec() == QDialog::Accepted)
         about->close();
 }
@@ -246,5 +245,7 @@ MainWindow::encryptAfter()
 void
 MainWindow::profile()
 {
-    _profdialog->exec();
+    if(_profdialog->exec() == QDialog::Accepted) {
+
+    }
 }

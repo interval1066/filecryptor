@@ -49,8 +49,10 @@ class MainWindow : public QMainWindow
     QAction* decryptItems;
     QAction* clearItems;
 
+    std::unique_ptr<encryptor::tPROFILE> _profile;
     std::unique_ptr<ProfsDlg> _profdialog;
     std::unique_ptr<PWDialog> _pwdlg;
+
     int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
@@ -65,7 +67,7 @@ class MainWindow : public QMainWindow
     void profile(void);
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void initUI();
 

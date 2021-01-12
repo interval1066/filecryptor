@@ -36,7 +36,7 @@ class PWDialog : public QDialog
     QAction *exitAction;
 
 public:
-    PWDialog();
+    PWDialog(QWidget *parent = nullptr);
 };
 
 #endif // PWDLG_H
