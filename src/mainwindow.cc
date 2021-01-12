@@ -12,8 +12,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      _profile(std::make_unique<encryptor::Profile>()),
-      _profdialog(std::make_unique<ProfsDlg>(_profile.get())),
+      _profile(std::make_shared<encryptor::Profile>()),
       _pwdlg(std::make_unique<PWDialog>()),
       _winx(600), _winy(480)
 {
@@ -31,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     _settings.endGroup();
     resize(_winx, _winy);
+    _profile->mode = encryptor::MODE_CTR;
+    _profdialog = std::make_unique<ProfsDlg>(_profile, this);
 
     initUI();
 }
@@ -56,6 +57,7 @@ MainWindow::~MainWindow()
 void
 MainWindow::initUI()
 {
+    _profile->mode = encryptor::tAESMODES::MODE_CTR;
     setMainMenu();
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
@@ -201,6 +203,7 @@ MainWindow::setMainMenu()
     about->addAction(aboutApp);
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
+
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
     connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
@@ -209,7 +212,7 @@ MainWindow::setMainMenu()
 void
 MainWindow::aboutCryptor()
 {
-    AboutDlg* about = new AboutDlg;
+    AboutDlg* about = new AboutDlg(this);
     if(about->exec() == QDialog::Accepted)
         about->close();
 }

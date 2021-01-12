@@ -1,10 +1,9 @@
 #include <QtWidgets>
 #include "include/profsdlg.h"
 
-ProfsDlg::ProfsDlg(encryptor::Profile* prof, QWidget *parent)
-    : QDialog(parent)
+ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::Profile>& prof, QWidget* parent) :
+   QDialog(parent), _prof(prof)
 {
-    _prof = prof;
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel, this);
@@ -19,6 +18,10 @@ ProfsDlg::ProfsDlg(encryptor::Profile* prof, QWidget *parent)
 
     resize(480, 140);
     setWindowTitle(tr("filecryptor"));
+    if(_prof->mode == encryptor::MODE_CTR)
+        qDebug("CTR MODE FOUND");
+    else
+        qDebug("MODE NOT FOUND");
 }
 
 void
@@ -70,5 +73,9 @@ ProfsDlg::enableTargetDir(bool bEnable)
 void
 ProfsDlg::populateProfile()
 {
-    //_prof->mode =
+}
+
+void
+ProfsDlg::populateGui()
+{
 }
