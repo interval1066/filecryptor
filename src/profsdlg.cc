@@ -5,11 +5,8 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::Profile>& prof, QWidget* parent) :
    QDialog(parent), _prof(prof)
 {
     createGridGroupBox();
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-        | QDialogButtonBox::Cancel, this);
-
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(gridGroupBox);
@@ -18,21 +15,17 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::Profile>& prof, QWidget* parent) :
 
     resize(480, 140);
     setWindowTitle(tr("filecryptor"));
-    if(_prof->mode == encryptor::MODE_CTR)
-        qDebug("CTR MODE FOUND");
-    else
-        qDebug("MODE NOT FOUND");
 }
 
 void
 ProfsDlg::createGridGroupBox()
 {
-    QRadioButton* radio1 = new QRadioButton(tr("ECB mode"), this);
-    QRadioButton* radio2 = new QRadioButton(tr("CBC mode"), this);
-    QRadioButton* radio3 = new QRadioButton(tr("CFB mode"), this);
+    radio1 = new QRadioButton(tr("ECB mode"), this);
+    radio2 = new QRadioButton(tr("CBC mode"), this);
+    radio3 = new QRadioButton(tr("CFB mode"), this);
 
-    QRadioButton* radio4 = new QRadioButton(tr("OFB mode"), this);
-    QRadioButton* radio5 = new QRadioButton(tr("CTR mode"), this);
+    radio4 = new QRadioButton(tr("OFB mode"), this);
+    radio5 = new QRadioButton(tr("CTR mode"), this);
     gridGroupBox = new QGroupBox(tr("Encryption Profile"), this);
 
     QGridLayout *layout = new QGridLayout(this);
@@ -47,7 +40,7 @@ ProfsDlg::createGridGroupBox()
     QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"), this);
     layout->addWidget(saveOriginal, 1, 2, 1, 1);
 
-    QCheckBox* targetDir = new QCheckBox(tr("Encrypted files will go here"), this);
+    QCheckBox* targetDir = new QCheckBox(tr("Place encrypted files in this directory"), this);
     layout->addWidget(targetDir, 2, 2, 1, 2);
     targetDir->setChecked(false);
 
@@ -78,4 +71,32 @@ ProfsDlg::populateProfile()
 void
 ProfsDlg::populateGui()
 {
+    switch(_prof->mode) {
+    case encryptor::MODE_ECB:
+        radio1->setChecked(true);
+        break;
+
+    case encryptor::MODE_CBC:
+        radio2->setChecked(true);
+        break;
+
+    case encryptor::MODE_CFB:
+        radio3->setChecked(true);
+        break;
+
+    case encryptor::MODE_OFB:
+        radio4->setChecked(true);
+        break;
+
+    case encryptor::MODE_CTR:
+        radio5->setChecked(true);
+        break;
+
+    default:
+        radio1->setChecked(true);
+        break;
+    }
+
+    (saveOriginal->checkState())? _prof->preserveFile = 1 :
+        _prof->preserveFile = 0;
 }

@@ -13,6 +13,7 @@ class QPushButton;
 class QLineEdit;
 class QCheckBox;
 class QPushButton;
+class QRadioButton;
 QT_END_NAMESPACE
 
 class ProfsDlg : public QDialog
@@ -25,12 +26,20 @@ class ProfsDlg : public QDialog
 
     QPushButton* dirSelect;
     QLineEdit* dirEdit;
+    QRadioButton* radio1;
+
+    QRadioButton* radio2;
+    QRadioButton* radio3;
+    QRadioButton* radio4;
+
+    QRadioButton* radio5;
+    QCheckBox* saveOriginal;
     void createHorizontalGroupBox();
 
     void createGridGroupBox();
+
     void populateProfile(void);
     void populateGui(void);
-
     std::shared_ptr<encryptor::Profile> _prof;
 
 public:

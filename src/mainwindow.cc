@@ -30,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     _settings.endGroup();
     resize(_winx, _winy);
-    _profile->mode = encryptor::MODE_CTR;
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
 
     initUI();
@@ -57,7 +56,6 @@ MainWindow::~MainWindow()
 void
 MainWindow::initUI()
 {
-    _profile->mode = encryptor::tAESMODES::MODE_CTR;
     setMainMenu();
     statusBar = new QStatusBar(this);
     this->setStatusBar(statusBar);
