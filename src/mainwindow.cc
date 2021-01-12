@@ -12,12 +12,12 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      profdialog(std::make_unique<ProfsDlg>()),
+      _profdialog(std::make_unique<ProfsDlg>()),
+      _pwdlg(std::make_unique<PWDialog>()),
       _winx(600), _winy(480)
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
     auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    _pwdlg = new PWDialog;
 
     if(!QDir(settings).exists())
         QDir().mkdir(settings);
@@ -85,6 +85,7 @@ MainWindow::onSelected(QModelIndex index)
 
     auto list = treeView->selectionModel()->selectedIndexes();
     if(list.size() < 1) {
+
         encryptItems->setDisabled(true);
         decryptItems->setDisabled(true);
         clearItems->setDisabled(true);
@@ -245,5 +246,5 @@ MainWindow::encryptAfter()
 void
 MainWindow::profile()
 {
-    profdialog->exec();
+    _profdialog->exec();
 }

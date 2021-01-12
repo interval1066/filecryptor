@@ -15,11 +15,25 @@
 #include "aboutdlg.h"
 #include "profsdlg.h"
 
+namespace encryptor
+{
+    enum tAESMODES
+    {
+        MODE_ECB = 0, MODE_CBC = 1, MODE_CFB = 2, MODE_OFB = 3, ODE_CTR = 4
+    };
+
+    struct tPROFILE
+    {
+        tAESMODES mode;
+        qint32 preserveFile;
+        qint32 setTargetDir;
+        QString targetDir;
+    };
+}
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
-    PWDialog* _pwdlg;
     QTreeView* treeView;
     EncryptItemModel* itemModel;
 
@@ -35,7 +49,8 @@ class MainWindow : public QMainWindow
     QAction* decryptItems;
     QAction* clearItems;
 
-    std::unique_ptr<ProfsDlg> profdialog;
+    std::unique_ptr<ProfsDlg> _profdialog;
+    std::unique_ptr<PWDialog> _pwdlg;
     int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
