@@ -1,4 +1,4 @@
-#include <QtWidgets>
+﻿#include <QtWidgets>
 #include "include/profsdlg.h"
 
 ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::Profile>& prof, QWidget* parent) :
@@ -11,8 +11,8 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::Profile>& prof, QWidget* parent) :
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(gridGroupBox);
     mainLayout->addWidget(buttonBox);
-    setLayout(mainLayout);
 
+    setLayout(mainLayout);
     resize(480, 140);
     setWindowTitle(tr("filecryptor"));
 }
@@ -40,7 +40,7 @@ ProfsDlg::createGridGroupBox()
     QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"), this);
     layout->addWidget(saveOriginal, 1, 2, 1, 1);
 
-    QCheckBox* targetDir = new QCheckBox(tr("Place encrypted files in this directory"), this);
+    targetDir = new QCheckBox(tr("Place encrypted files in this directory"), this);
     layout->addWidget(targetDir, 2, 2, 1, 2);
     targetDir->setChecked(false);
 
@@ -54,6 +54,7 @@ ProfsDlg::createGridGroupBox()
 
     gridGroupBox->setLayout(layout);
     connect(targetDir, &QCheckBox::clicked, this, &ProfsDlg::enableTargetDir);
+    connect(dirSelect, &QPushButton::clicked, this, &ProfsDlg::selectDir);
 }
 
 void
@@ -99,4 +100,15 @@ ProfsDlg::populateGui()
 
     (saveOriginal->checkState())? _prof->preserveFile = 1 :
         _prof->preserveFile = 0;
+
+    (targetDir->checkState())? _prof->setTargetDir = 1 :
+        _prof->setTargetDir = 0;
+
+    dirEdit->setText(const_cast<QString&>(_prof->targetDir));
+}
+
+void
+ProfsDlg::selectDir()
+{
+    qDebug("Select directory");
 }

@@ -2,6 +2,7 @@
 #define PROFSDLG_H_
 
 #include <QDialog>
+#include <QFileSelector>
 #include "profile.h"
 
 QT_BEGIN_NAMESPACE
@@ -34,8 +35,9 @@ class ProfsDlg : public QDialog
 
     QRadioButton* radio5;
     QCheckBox* saveOriginal;
-    void createHorizontalGroupBox();
+    QCheckBox* targetDir;
 
+    void createHorizontalGroupBox();
     void createGridGroupBox();
 
     void populateProfile(void);
@@ -52,6 +54,7 @@ public:
 
 private slots:
     void enableTargetDir(bool);
+    void selectDir(void);
 };
 
 #endif
