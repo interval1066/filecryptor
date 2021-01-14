@@ -37,6 +37,7 @@ class ProfsDlg : public QDialog
     QCheckBox* saveOriginal;
     QCheckBox* targetDir;
 
+    QCheckBox* defProfile;
     void createHorizontalGroupBox();
     void createGridGroupBox();
 

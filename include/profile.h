@@ -17,6 +17,7 @@ namespace encryptor
         qint32 preserveFile;
         qint32 setTargetDir;
         QString targetDir;
+        QString defProfile;
     };
 }
 

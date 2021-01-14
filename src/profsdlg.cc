@@ -37,19 +37,21 @@ ProfsDlg::createGridGroupBox()
     layout->addWidget(radio5, 5, 0, Qt::AlignLeft);
 
     radio1->setChecked(true);
-    QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"), this);
+    saveOriginal = new QCheckBox(tr("Preserve original file"), this);
     layout->addWidget(saveOriginal, 1, 2, 1, 1);
 
+    defProfile = new QCheckBox(tr("Save as default profile"));
+    layout->addWidget(defProfile, 2, 2, 1, 2);
     targetDir = new QCheckBox(tr("Place encrypted files in this directory"), this);
-    layout->addWidget(targetDir, 2, 2, 1, 2);
+    layout->addWidget(targetDir, 3, 2, 1, 2);
     targetDir->setChecked(false);
 
     dirSelect = new QPushButton(tr("Select Directory"), this);
-    layout->addWidget(dirSelect, 3, 2, 1, 1);
+    layout->addWidget(dirSelect, 4, 2, 1, 1);
     dirSelect->setEnabled(false);
 
     dirEdit = new QLineEdit(this);
-    layout->addWidget(dirEdit, 4, 2, 1, 1);
+    layout->addWidget(dirEdit, 5, 2, 1, 1);
     dirEdit->setEnabled(false);
 
     gridGroupBox->setLayout(layout);
