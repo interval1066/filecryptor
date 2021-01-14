@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       _profile(std::make_shared<encryptor::Profile>()),
       _pwdlg(std::make_unique<PWDialog>()),
+      _about(std::make_unique<AboutDlg>()),
       _winx(600), _winy(480)
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
@@ -210,9 +211,8 @@ MainWindow::setMainMenu()
 void
 MainWindow::aboutCryptor()
 {
-    AboutDlg* about = new AboutDlg(this);
-    if(about->exec() == QDialog::Accepted)
-        about->close();
+    if(_about->exec() == QDialog::Accepted)
+        _about->close();
 }
 
 bool

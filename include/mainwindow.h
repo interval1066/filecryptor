@@ -38,6 +38,7 @@ class MainWindow : public QMainWindow
     std::unique_ptr<ProfsDlg> _profdialog;
     std::unique_ptr<PWDialog> _pwdlg;
 
+    std::unique_ptr<AboutDlg> _about;
     int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
