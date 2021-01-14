@@ -74,5 +74,7 @@ ProfsDlg::populateProfile()
 void
 ProfsDlg::selectDir()
 {
-    qDebug("Select directory");
+    _prof->targetDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+        QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    dirEdit->setText(_prof->targetDir);
 }
