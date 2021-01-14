@@ -42,7 +42,6 @@ class ProfsDlg : public QDialog
     void createGridGroupBox();
 
     void populateProfile(void);
-    void populateGui(void);
     std::shared_ptr<encryptor::Profile> _prof;
 
 public:

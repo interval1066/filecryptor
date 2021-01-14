@@ -246,7 +246,5 @@ MainWindow::encryptAfter()
 void
 MainWindow::profile()
 {
-    if(_profdialog->exec() == QDialog::Accepted) {
-
-    }
+    if(_profdialog->exec() == QDialog::Accepted) {}
 }

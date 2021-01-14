@@ -72,44 +72,6 @@ ProfsDlg::populateProfile()
 }
 
 void
-ProfsDlg::populateGui()
-{
-    switch(_prof->mode) {
-    case encryptor::MODE_ECB:
-        radio1->setChecked(true);
-        break;
-
-    case encryptor::MODE_CBC:
-        radio2->setChecked(true);
-        break;
-
-    case encryptor::MODE_CFB:
-        radio3->setChecked(true);
-        break;
-
-    case encryptor::MODE_OFB:
-        radio4->setChecked(true);
-        break;
-
-    case encryptor::MODE_CTR:
-        radio5->setChecked(true);
-        break;
-
-    default:
-        radio1->setChecked(true);
-        break;
-    }
-
-    (saveOriginal->checkState())? _prof->preserveFile = 1 :
-        _prof->preserveFile = 0;
-
-    (targetDir->checkState())? _prof->setTargetDir = 1 :
-        _prof->setTargetDir = 0;
-
-    dirEdit->setText(const_cast<QString&>(_prof->targetDir));
-}
-
-void
 ProfsDlg::selectDir()
 {
     qDebug("Select directory");
