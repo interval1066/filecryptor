@@ -1,4 +1,4 @@
-#ifndef PROFSDLG_H_
+﻿#ifndef PROFSDLG_H_
 #define PROFSDLG_H_
 
 #include <QDialog>
@@ -39,15 +39,15 @@ class ProfsDlg : public QDialog
 
     void createHorizontalGroupBox();
     void createGridGroupBox();
-
     void populateProfile(void);
+
     void populateGui(void);
-    std::shared_ptr<encryptor::Profile> _prof;
+    std::shared_ptr<encryptor::tPROFILE> _prof;
 
 public:
-    ProfsDlg(std::shared_ptr<encryptor::Profile>&, QWidget* parent = nullptr);
+    ProfsDlg(std::shared_ptr<encryptor::tPROFILE> const&, QWidget* parent = nullptr);
 
-    inline const std::shared_ptr<encryptor::Profile>& GetProfile()
+    inline std::shared_ptr<encryptor::tPROFILE> GetProfile()
     {
         return _prof;
     }

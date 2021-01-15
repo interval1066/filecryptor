@@ -12,7 +12,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      _profile(std::make_shared<encryptor::Profile>()),
+      _profile(std::make_shared<encryptor::tPROFILE>()),
       _pwdlg(std::make_unique<PWDialog>()),
       _about(std::make_unique<AboutDlg>()),
       _winx(600), _winy(480)
@@ -246,7 +246,5 @@ MainWindow::encryptAfter()
 void
 MainWindow::profile()
 {
-    if(_profdialog->exec() == QDialog::Accepted) {
-
-    }
+    if(_profdialog->exec() == QDialog::Accepted) {}
 }

@@ -34,7 +34,7 @@ class MainWindow : public QMainWindow
     QAction* decryptItems;
     QAction* clearItems;
 
-    std::shared_ptr<encryptor::Profile> _profile;
+    std::shared_ptr<encryptor::tPROFILE> _profile;
     std::unique_ptr<ProfsDlg> _profdialog;
     std::unique_ptr<PWDialog> _pwdlg;
 
