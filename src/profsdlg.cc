@@ -37,19 +37,21 @@ ProfsDlg::createGridGroupBox()
     layout->addWidget(radio5, 5, 0, Qt::AlignLeft);
 
     radio1->setChecked(true);
-    QCheckBox* saveOriginal = new QCheckBox(tr("Preserve original file"), this);
+    saveOriginal = new QCheckBox(tr("Preserve original file"), this);
     layout->addWidget(saveOriginal, 1, 2, 1, 1);
 
+    defProfile = new QCheckBox(tr("Save as default profile"));
+    layout->addWidget(defProfile, 2, 2, 1, 2);
     targetDir = new QCheckBox(tr("Place encrypted files in this directory"), this);
-    layout->addWidget(targetDir, 2, 2, 1, 2);
+    layout->addWidget(targetDir, 3, 2, 1, 2);
     targetDir->setChecked(false);
 
     dirSelect = new QPushButton(tr("Select Directory"), this);
-    layout->addWidget(dirSelect, 3, 2, 1, 1);
+    layout->addWidget(dirSelect, 4, 2, 1, 1);
     dirSelect->setEnabled(false);
 
     dirEdit = new QLineEdit(this);
-    layout->addWidget(dirEdit, 4, 2, 1, 1);
+    layout->addWidget(dirEdit, 5, 2, 1, 1);
     dirEdit->setEnabled(false);
 
     gridGroupBox->setLayout(layout);
@@ -70,45 +72,9 @@ ProfsDlg::populateProfile()
 }
 
 void
-ProfsDlg::populateGui()
-{
-    switch(_prof->mode) {
-    case encryptor::MODE_ECB:
-        radio1->setChecked(true);
-        break;
-
-    case encryptor::MODE_CBC:
-        radio2->setChecked(true);
-        break;
-
-    case encryptor::MODE_CFB:
-        radio3->setChecked(true);
-        break;
-
-    case encryptor::MODE_OFB:
-        radio4->setChecked(true);
-        break;
-
-    case encryptor::MODE_CTR:
-        radio5->setChecked(true);
-        break;
-
-    default:
-        radio1->setChecked(true);
-        break;
-    }
-
-    (saveOriginal->checkState())? _prof->preserveFile = 1 :
-        _prof->preserveFile = 0;
-
-    (targetDir->checkState())? _prof->setTargetDir = 1 :
-        _prof->setTargetDir = 0;
-
-    dirEdit->setText(const_cast<QString&>(_prof->targetDir));
-}
-
-void
 ProfsDlg::selectDir()
 {
-    qDebug("Select directory");
+    _prof->targetDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+        QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    dirEdit->setText(_prof->targetDir);
 }
