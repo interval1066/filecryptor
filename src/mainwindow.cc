@@ -33,6 +33,30 @@ MainWindow::MainWindow(QWidget *parent)
 
         _settings.endGroup();
         _settings.beginGroup("ENCRYPTOPTION");
+        int mode = _settings.value("mode").toInt();
+        switch(mode) {
+            case encryptor::MODE_CBC:
+                _profile->mode = encryptor::MODE_CBC;
+                break;
+
+            case encryptor::MODE_CFB:
+                _profile->mode = encryptor::MODE_CFB;
+                break;
+
+            case encryptor::MODE_CTR:
+                _profile->mode = encryptor::MODE_CTR;
+                break;
+
+            case encryptor::MODE_ECB:
+                _profile->mode = encryptor::MODE_ECB;
+            break;
+
+            case encryptor::MODE_OFB:
+                _profile->mode = encryptor::MODE_OFB;
+            break;
+        }
+
+        _settings.endGroup();
         resize(_winx, _winy);
     }
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
