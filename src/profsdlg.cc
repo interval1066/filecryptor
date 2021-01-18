@@ -96,6 +96,8 @@ ProfsDlg::populateProfile()
 
     (defProfile->isChecked())? _prof->setTargetDir = 1 :
         _prof->setTargetDir = 0;
+
+    _prof->defProfile = dirEdit->text() + "/default.ini";
 }
 
 void
