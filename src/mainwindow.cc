@@ -15,22 +15,25 @@ MainWindow::MainWindow(QWidget *parent)
       _profile(std::make_shared<encryptor::tPROFILE>()),
       _pwdlg(std::make_unique<PWDialog>()),
       _about(std::make_unique<AboutDlg>()),
-      _winx(600), _winy(480)
+      _winx(700), _winy(500)
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
     auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QSettings _settings(settings + "/" + appname + ".ini", QSettings::IniFormat);
 
     if(!QDir(settings).exists())
-        QDir().mkdir(settings);
+        resize(_winx, _winy);
+    else {
 
-    QSettings _settings(settings + "/" + appname + ".ini", QSettings::IniFormat);
-    _settings.beginGroup("MAINUI");
+        QSettings _settings(settings + "/" + appname + ".ini", QSettings::IniFormat);
+        _settings.beginGroup("MAINUI");
 
-    _winx = _settings.value("winx").toInt();
-    _winy = _settings.value("winy").toInt();
+        _winx = _settings.value("winx").toInt();
+        _winy = _settings.value("winy").toInt();
 
-    _settings.endGroup();
-    resize(_winx, _winy);
+        _settings.endGroup();
+        resize(_winx, _winy);
+    }
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
 
     initUI();
@@ -49,6 +52,14 @@ MainWindow::~MainWindow()
 
     _settings.setValue("winx", QString::number(wsize));
     _settings.setValue("winy", QString::number(hsize));
+
+    _settings.endGroup();
+    _settings.beginGroup("ENCRYPTOPTIONS");
+    _settings.setValue("mode", _profile->mode);
+
+    _settings.setValue("preserveFile", _profile->preserveFile);
+    _settings.setValue("setTargetDir", _profile->setTargetDir);
+    _settings.setValue("defProfilePath", _profile->defProfile);
 
     _settings.endGroup();
     _settings.sync();

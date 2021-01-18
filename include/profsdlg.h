@@ -41,21 +41,14 @@ class ProfsDlg : public QDialog
     void createHorizontalGroupBox();
     void createGridGroupBox();
     void populateProfile(void);
-<<<<<<< HEAD
 
     void populateGui(void);
     std::shared_ptr<encryptor::tPROFILE> _prof;
-=======
-    std::shared_ptr<encryptor::Profile> _prof;
->>>>>>> 843f2f2ff9905305a5ba3eee0717404bb8ee1710
+    void accept(void) override;
 
 public:
-    ProfsDlg(std::shared_ptr<encryptor::tPROFILE> const&, QWidget* parent = nullptr);
-
-    inline std::shared_ptr<encryptor::tPROFILE> GetProfile()
-    {
-        return _prof;
-    }
+    explicit ProfsDlg(std::shared_ptr<encryptor::tPROFILE> const&, QWidget* parent = nullptr);
+    ~ProfsDlg();
 
 private slots:
     void enableTargetDir(bool);

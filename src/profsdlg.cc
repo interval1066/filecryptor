@@ -5,9 +5,11 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::tPROFILE> const& prof, QWidget* pa
    QDialog(parent), _prof(prof)
 {
     createGridGroupBox();
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, this);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
+        QDialogButtonBox::Cancel, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(gridGroupBox);
     mainLayout->addWidget(buttonBox);
@@ -17,9 +19,15 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::tPROFILE> const& prof, QWidget* pa
     setWindowTitle(tr("filecryptor"));
 }
 
+ProfsDlg::~ProfsDlg()
+{
+
+}
+
 void
 ProfsDlg::createGridGroupBox()
 {
+    QGridLayout *layout = new QGridLayout(this);
     radio1 = new QRadioButton(tr("ECB mode"), this);
     radio2 = new QRadioButton(tr("CBC mode"), this);
     radio3 = new QRadioButton(tr("CFB mode"), this);
@@ -28,7 +36,6 @@ ProfsDlg::createGridGroupBox()
     radio5 = new QRadioButton(tr("CTR mode"), this);
     gridGroupBox = new QGroupBox(tr("Encryption Profile"), this);
 
-    QGridLayout *layout = new QGridLayout(this);
     layout->addWidget(radio1, 1, 0);
     layout->addWidget(radio2, 2, 0, Qt::AlignLeft);
 
@@ -69,6 +76,26 @@ ProfsDlg::enableTargetDir(bool bEnable)
 void
 ProfsDlg::populateProfile()
 {
+    if(radio1->isChecked())
+        _prof->mode = encryptor::MODE_ECB;
+
+    if(radio2->isChecked())
+        _prof->mode = encryptor::MODE_CBC;
+
+    if(radio3->isChecked())
+        _prof->mode = encryptor::MODE_CFB;
+
+    if(radio4->isChecked())
+        _prof->mode = encryptor::MODE_CTR;
+
+    if(radio5->isChecked())
+        _prof->mode = encryptor::MODE_OFB;
+
+    (saveOriginal->isChecked())? _prof->preserveFile = 1:
+        _prof->preserveFile = 0;
+
+    (defProfile->isChecked())? _prof->setTargetDir = 1 :
+        _prof->setTargetDir = 0;
 }
 
 void
@@ -77,4 +104,10 @@ ProfsDlg::selectDir()
     _prof->targetDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
         QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     dirEdit->setText(_prof->targetDir);
+}
+
+void ProfsDlg::accept()
+{
+    populateProfile();
+    QDialog::accept();
 }
