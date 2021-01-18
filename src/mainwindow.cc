@@ -59,6 +59,8 @@ MainWindow::~MainWindow()
 
     _settings.setValue("preserveFile", _profile->preserveFile);
     _settings.setValue("setTargetDir", _profile->setTargetDir);
+    _settings.setValue("setTargetDir", _profile->targetDir);
+
     _settings.setValue("defProfilePath", _profile->defProfile);
 
     _settings.endGroup();
