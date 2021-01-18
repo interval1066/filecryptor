@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
         _winy = _settings.value("winy").toInt();
 
         _settings.endGroup();
+        _settings.beginGroup("ENCRYPTOPTION");
         resize(_winx, _winy);
     }
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
@@ -54,7 +55,7 @@ MainWindow::~MainWindow()
     _settings.setValue("winy", QString::number(hsize));
 
     _settings.endGroup();
-    _settings.beginGroup("ENCRYPTOPTIONS");
+    _settings.beginGroup("ENCRYPTOPTION");
     _settings.setValue("mode", _profile->mode);
 
     _settings.setValue("preserveFile", _profile->preserveFile);
