@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QShortcut>
 #include <QFileInfo>
+#include <QFileDialog>
 #include <memory>
 #include "encryptitemmodel.h"
 #include "pwdlg.h"
@@ -51,6 +52,9 @@ class MainWindow : public QMainWindow
 
     void encryptAfter(void);
     void profile(void);
+    void openProfile(void);
+
+    void saveProfile(void);
 
 public:
     MainWindow(QWidget *parent = nullptr);
