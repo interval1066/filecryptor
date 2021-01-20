@@ -20,7 +20,10 @@
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    int _winx, _winy;
+    QString _currentProfile;
     QTreeView* treeView;
+
     EncryptItemModel* itemModel;
 
     QMenuBar* mainMenu;
@@ -40,7 +43,6 @@ class MainWindow : public QMainWindow
     std::unique_ptr<PWDialog> _pwdlg;
 
     std::unique_ptr<AboutDlg> _about;
-    int _winx, _winy;
 
     void testfunc1(QList<QModelIndex>&);
     void clearSelected(void);
@@ -55,6 +57,7 @@ class MainWindow : public QMainWindow
     void openProfile(void);
 
     void saveProfile(void);
+    void saveAsProfile(void);
 
 public:
     MainWindow(QWidget *parent = nullptr);

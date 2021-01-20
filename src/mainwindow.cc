@@ -218,11 +218,14 @@ MainWindow::setMainMenu()
     auto* open = new QAction("&Open Profile", this);
     file->addAction(open);
 
-    auto* save = new QAction("&Save Profile ", this);
+    auto* save = new QAction("&Save Profile", this);
     file->addAction(save);
     save->setDisabled(true);
 
+    auto* saveAs = new QAction("&Save Profile As...", this);
+    file->addAction(saveAs);
     file->addSeparator();
+
     auto* quit = new QAction("&Quit", this);
     file->addAction(quit);
 
@@ -251,10 +254,12 @@ MainWindow::setMainMenu()
 
     connect(open, &QAction::triggered, this, &MainWindow::openProfile);
     connect(save, &QAction::triggered, this, &MainWindow::saveProfile);
+    connect(saveAs, &QAction::triggered, this, &MainWindow::saveAsProfile);
+
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
-
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
+
     connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
@@ -313,4 +318,12 @@ MainWindow::saveProfile()
 {
     QFileDialog::getSaveFileName(this, tr("Save encryption profile"),
         "", tr("Profile (*.pro);;All Files (*)"));
+}
+
+void
+MainWindow::saveAsProfile()
+{
+    QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
+        "", tr("Profile (*.pro);;All Files (*)"));
+
 }
