@@ -3,7 +3,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = filecrypt
 TEMPLATE = app
-
+DEFINES += "_DEBUG"
 
 SOURCES += \
     src/aboutdlg.cpp \

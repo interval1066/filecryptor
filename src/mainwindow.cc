@@ -1,5 +1,4 @@
 #include "include/mainwindow.h"
-
 #include <QHeaderView>
 #include <QFile>
 #include <QStandardPaths>
@@ -34,7 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
         _settings.endGroup();
         _settings.beginGroup("ENCRYPTOPTION");
         int mode = _settings.value("mode").toInt();
+
         switch(mode) {
+            case encryptor::MODE_ECB:
+                _profile->mode = encryptor::MODE_ECB;
+                break;
+
             case encryptor::MODE_CBC:
                 _profile->mode = encryptor::MODE_CBC;
                 break;
@@ -43,20 +47,23 @@ MainWindow::MainWindow(QWidget *parent)
                 _profile->mode = encryptor::MODE_CFB;
                 break;
 
+            case encryptor::MODE_OFB:
+                _profile->mode = encryptor::MODE_OFB;
+                break;
+
             case encryptor::MODE_CTR:
                 _profile->mode = encryptor::MODE_CTR;
                 break;
-
-            case encryptor::MODE_ECB:
-                _profile->mode = encryptor::MODE_ECB;
-            break;
-
-            case encryptor::MODE_OFB:
-                _profile->mode = encryptor::MODE_OFB;
-            break;
         }
 
+        _profile->preserveFile = _settings.value("preserveFile").toInt();
+        _profile->makeDefault = _settings.value("makeDefault").toInt();
+        _profile->setTargetDir = _settings.value("setTargetDir").toInt();
+
+        _profile->targetDir = _settings.value("targetDir").toString();
+        _profile->defProfile = _settings.value("defaultProf").toString();
         _settings.endGroup();
+
         resize(_winx, _winy);
     }
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
@@ -83,10 +90,11 @@ MainWindow::~MainWindow()
     _settings.setValue("mode", _profile->mode);
 
     _settings.setValue("preserveFile", _profile->preserveFile);
+    _settings.setValue("makeDefault", _profile->makeDefault);
     _settings.setValue("setTargetDir", _profile->setTargetDir);
-    _settings.setValue("setTargetDir", _profile->targetDir);
 
-    _settings.setValue("defProfilePath", _profile->defProfile);
+    _settings.setValue("targetDir", _profile->targetDir);
+    _settings.setValue("defaultProf", _profile->defProfile);
 
     _settings.endGroup();
     _settings.sync();
@@ -176,7 +184,6 @@ MainWindow::testfunc1(QList<QModelIndex>& list)
             if(!file.isDir()) {
 
                 qDebug("%s %s", qPrintable(file.completeBaseName() + ".enc"), qPrintable(file.absolutePath()));
-
             }
         }
     }
@@ -284,5 +291,6 @@ MainWindow::encryptAfter()
 void
 MainWindow::profile()
 {
-    if(_profdialog->exec() == QDialog::Accepted) {}
+    if(_profdialog->exec() == QDialog::Accepted) { }
+    _profile = _profdialog->getProfile();
 }

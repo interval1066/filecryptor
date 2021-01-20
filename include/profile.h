@@ -18,6 +18,7 @@ namespace encryptor
     {
         tAESMODES mode;
         qint32 preserveFile;
+        qint32 makeDefault;
         qint32 setTargetDir;
         QString targetDir;
         QString defProfile;
