@@ -23,7 +23,7 @@ ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::tPROFILE>& prof, QWidget* parent) 
 void
 ProfsDlg::createGridGroupBox()
 {
-    QGridLayout *layout = new QGridLayout(this);
+    auto* layout = new QGridLayout(this);
     radio1 = new QRadioButton(tr("ECB mode"), this);
     radio2 = new QRadioButton(tr("CBC mode"), this);
 

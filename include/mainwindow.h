@@ -17,6 +17,11 @@
 #include "profsdlg.h"
 #include "profile.h"
 
+enum tFILEIO_TYPE
+{
+    OPEN, SAVE, SAVEAS
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -54,10 +59,7 @@ class MainWindow : public QMainWindow
 
     void encryptAfter(void);
     void profile(void);
-    void openProfile(void);
-
-    void saveProfile(void);
-    void saveAsProfile(void);
+    void fileIO(tFILEIO_TYPE&);
 
 public:
     MainWindow(QWidget *parent = nullptr);

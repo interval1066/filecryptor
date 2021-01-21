@@ -11,10 +11,10 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
+      _winx(700), _winy(500),
       _profile(std::make_shared<encryptor::tPROFILE>()),
       _pwdlg(std::make_unique<PWDialog>()),
-      _about(std::make_unique<AboutDlg>()),
-      _winx(700), _winy(500)
+    _about(std::make_unique<AboutDlg>())
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
     auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -62,8 +62,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         _profile->targetDir = _settings.value("targetDir").toString();
         _profile->defProfile = _settings.value("defaultProf").toString();
-        _settings.endGroup();
+        _profile->lastDir = _settings.value("lastDir").toString();
 
+        _settings.endGroup();
         resize(_winx, _winy);
     }
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
@@ -95,6 +96,7 @@ MainWindow::~MainWindow()
 
     _settings.setValue("targetDir", _profile->targetDir);
     _settings.setValue("defaultProf", _profile->defProfile);
+    _settings.setValue("lastDir", _profile->lastDir);
 
     _settings.endGroup();
     _settings.sync();
@@ -151,9 +153,9 @@ MainWindow::onCustomContextMenu(const QPoint& point)
     auto contextMenu = std::make_unique<QMenu>();
     auto list = treeView->selectionModel()->selectedIndexes();
 
-    QAction *action = contextMenu->addAction(tr("Decrypt Selected"));
-    QAction *action1 = contextMenu->addAction(tr("Encrypt Selected"));
-    QAction *action2 = contextMenu->addAction(tr("Clear Selected"));
+    auto* action = contextMenu->addAction(tr("Decrypt Selected"));
+    auto* action1 = contextMenu->addAction(tr("Encrypt Selected"));
+    auto* action2 = contextMenu->addAction(tr("Clear Selected"));
 
     connect(action, &QAction::triggered, this, [this, &list](){ decryptSelected(list); });
     connect(action1, &QAction::triggered, this, [this, &list](){ testfunc1(list); });
@@ -167,7 +169,7 @@ MainWindow::onCustomContextMenu(const QPoint& point)
         clearItems->setDisabled(true);
     }
 
-    QModelIndex index = treeView->indexAt(point);
+    auto index = treeView->indexAt(point);
     if (index.isValid())
         contextMenu->exec(treeView->viewport()->mapToGlobal(point));
 }
@@ -177,7 +179,7 @@ MainWindow::testfunc1(QList<QModelIndex>& list)
 {
     if(_pwdlg->exec() == QDialog::Accepted) {
         for (int i = 0; i < list.size(); i++) {
-            QStandardItem* item = itemModel->itemFromIndex(list.at(i));
+            auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
             QFileInfo file(data);
@@ -195,6 +197,7 @@ MainWindow::clearSelected()
     treeView->selectionModel()->clearSelection();
     encryptItems->setDisabled(true);
     decryptItems->setDisabled(true);
+
     clearItems->setDisabled(true);
 }
 
@@ -203,7 +206,7 @@ MainWindow::decryptSelected(QList<QModelIndex>& list)
 {
     if(_pwdlg->exec() == QDialog::Accepted) {
         for (int i = 0; i < list.size(); i++) {
-            QStandardItem* item = itemModel->itemFromIndex(list.at(i));
+            auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
             qDebug("%s", qPrintable(data));
@@ -214,7 +217,8 @@ MainWindow::decryptSelected(QList<QModelIndex>& list)
 void
 MainWindow::setMainMenu()
 {
-    QMenu* file = menuBar()->addMenu("&File");
+    //tFILEIO_TYPE type;
+    auto* file = menuBar()->addMenu("&File");
     auto* open = new QAction("&Open Profile", this);
     file->addAction(open);
 
@@ -229,7 +233,7 @@ MainWindow::setMainMenu()
     auto* quit = new QAction("&Quit", this);
     file->addAction(quit);
 
-    QMenu* encrypt = menuBar()->addMenu("&Encryption");
+    auto* encrypt = menuBar()->addMenu("&Encryption");
     encryptItems = new QAction("&Encrypt Selected", this);
     encrypt->addAction(encryptItems);
 
@@ -245,16 +249,16 @@ MainWindow::setMainMenu()
     auto* prefs = new QAction("Encryption &Profile", this);
     encrypt->addAction(prefs);
 
-    QMenu* about = menuBar()->addMenu("&About");
+    auto* about = menuBar()->addMenu("&About");
     auto* appHelp = new QAction("&Help");
     about->addAction(appHelp);
 
     auto* aboutApp = new QAction("&About Encyrptor", this);
     about->addAction(aboutApp);
 
-    connect(open, &QAction::triggered, this, &MainWindow::openProfile);
-    connect(save, &QAction::triggered, this, &MainWindow::saveProfile);
-    connect(saveAs, &QAction::triggered, this, &MainWindow::saveAsProfile);
+    connect(open, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
+    connect(save, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
+    connect(saveAs, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });
 
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
@@ -307,23 +311,31 @@ MainWindow::profile()
 }
 
 void
-MainWindow::openProfile()
+MainWindow::fileIO(tFILEIO_TYPE& type)
 {
-    QFileDialog::getOpenFileName(this, tr("Open encryption profile"),
-        tr("Profile (*.pro);;All Files (*)"));
-}
+    QString startDir, openFile;
+    if(_profile->lastDir.size() < 1)
+        startDir = QDir::homePath();
+    else
+        startDir = _profile->lastDir;
 
-void
-MainWindow::saveProfile()
-{
-    QFileDialog::getSaveFileName(this, tr("Save encryption profile"),
-        "", tr("Profile (*.pro);;All Files (*)"));
-}
+    switch(type) {
+    case OPEN:
+        openFile = QFileDialog::getOpenFileName(this, tr("Open encryption profile"),
+            startDir, tr("Profile (*.ini);;All Files (*)"));
+        break;
 
-void
-MainWindow::saveAsProfile()
-{
-    QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
-        "", tr("Profile (*.pro);;All Files (*)"));
+    case SAVE:
+        openFile = QFileDialog::getSaveFileName(this, tr("Save encryption profile"),
+            startDir, tr("Profile (*.ini);;All Files (*)"));
+         break;
 
+    case SAVEAS:
+        openFile = QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
+            startDir, tr("Profile (*.ini);;All Files (*)"));
+        break;
+    }
+
+    if(!openFile.isNull())
+        _profile->lastDir = QFileInfo(openFile).path();
 }
