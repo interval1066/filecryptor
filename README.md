@@ -6,4 +6,5 @@ No PKI, no super infrastructure stuff, just something with a nice interface to e
 ## To do:
 - [ ] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
+- [ ] Add menu accelerators
 
