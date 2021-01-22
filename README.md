@@ -7,4 +7,6 @@ No PKI, no super infrastructure stuff, just something with a nice interface to e
 - [ ] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
 - [ ] Add menu accelerators
+- [ ] nautilus/thunar/dolphin right click context integration(?)
+
 
