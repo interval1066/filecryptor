@@ -328,7 +328,7 @@ MainWindow::fileIO(tFILEIO_TYPE& type)
 
     case SAVE:
         if(!_currentProfile.isEmpty())
-            SaveProfile(_currentProfile);
+            SaveProfile();
         else {
             _currentProfile = QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
                 startDir, tr("Profile (*.ini);;All Files (*)"));
@@ -347,9 +347,14 @@ MainWindow::fileIO(tFILEIO_TYPE& type)
 }
 
 void
+MainWindow::SaveProfile()
+{
+    SaveProfileAs(_currentProfile);
+}
+
+void
 MainWindow::SaveProfileAs(QString& path)
 {
-    _currentProfile = path;
     QSettings _settings(_currentProfile, QSettings::IniFormat);
     qDebug("%s", qPrintable(_currentProfile));
     _settings.beginGroup("MAINUI");
@@ -360,6 +365,7 @@ MainWindow::SaveProfileAs(QString& path)
 
     _settings.setValue("preserveFile", _profile->preserveFile);
     _settings.setValue("setTargetDir", _profile->setTargetDir);
+    _currentProfile = path;
     _settings.setValue("targetDir", _profile->targetDir);
 
     _settings.setValue("defaultProf", _profile->defProfile);

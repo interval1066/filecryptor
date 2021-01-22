@@ -61,7 +61,7 @@ class MainWindow : public QMainWindow
     void profile(void);
     void fileIO(tFILEIO_TYPE&);
 
-    void SaveProfile(QString&);
+    void SaveProfile(void);
     void SaveProfileAs(QString&);
 
 public:
