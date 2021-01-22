@@ -3,7 +3,7 @@ Simple, per item encryption application in Qt for Linux. Just wanted a simple ap
 
 No PKI, no super infrastructure stuff, just something with a nice interface to experiment with. I envisioned using this as a starting point for porting different encryption algorithms to various platforms. IN NO WAY would I use this as my main encryption application, there are a lot better applications for that. Might not be a bad starting point for better application though.
 
-# To do:
+## To do:
 - [ ] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
 
