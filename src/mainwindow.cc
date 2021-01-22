@@ -11,9 +11,9 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      _winx(700), _winy(500),
-      _profile(std::make_shared<encryptor::tPROFILE>()),
-      _pwdlg(std::make_unique<PWDialog>()),
+    _winx(700), _winy(500),
+    _profile(std::make_shared<encryptor::tPROFILE>()),
+    _pwdlg(std::make_unique<PWDialog>()),
     _about(std::make_unique<AboutDlg>())
 {
     auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
@@ -185,7 +185,8 @@ MainWindow::testfunc1(QList<QModelIndex>& list)
             QFileInfo file(data);
             if(!file.isDir()) {
 
-                qDebug("%s %s", qPrintable(file.completeBaseName() + ".enc"), qPrintable(file.absolutePath()));
+                qDebug("%s %s", qPrintable(file.completeBaseName() + ".enc"),
+                    qPrintable(file.absolutePath()));
             }
         }
     }
@@ -217,48 +218,48 @@ MainWindow::decryptSelected(QList<QModelIndex>& list)
 void
 MainWindow::setMainMenu()
 {
-    //tFILEIO_TYPE type;
     auto* file = menuBar()->addMenu("&File");
     auto* open = new QAction("&Open Profile", this);
     file->addAction(open);
 
     auto* save = new QAction("&Save Profile", this);
     file->addAction(save);
-    save->setDisabled(true);
-
     auto* saveAs = new QAction("&Save Profile As...", this);
+
     file->addAction(saveAs);
     file->addSeparator();
-
     auto* quit = new QAction("&Quit", this);
-    file->addAction(quit);
 
+    file->addAction(quit);
     auto* encrypt = menuBar()->addMenu("&Encryption");
     encryptItems = new QAction("&Encrypt Selected", this);
-    encrypt->addAction(encryptItems);
 
+    encrypt->addAction(encryptItems);
     encryptItems->setDisabled(true);
     decryptItems = new QAction("&Decrypt Selected ", this);
-    encrypt->addAction(decryptItems);
 
+    encrypt->addAction(decryptItems);
     decryptItems->setDisabled(true);
     clearItems = new QAction("&Clear Selected ", this);
-    encrypt->addAction(clearItems);
 
+    encrypt->addAction(clearItems);
     encrypt->addSeparator();
     auto* prefs = new QAction("Encryption &Profile", this);
-    encrypt->addAction(prefs);
 
+    encrypt->addAction(prefs);
     auto* about = menuBar()->addMenu("&About");
     auto* appHelp = new QAction("&Help");
-    about->addAction(appHelp);
 
+    about->addAction(appHelp);
     auto* aboutApp = new QAction("&About Encyrptor", this);
     about->addAction(aboutApp);
 
-    connect(open, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
-    connect(save, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
-    connect(saveAs, &QAction::triggered, this, [&]() { tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });
+    connect(open, &QAction::triggered, this, [&](){
+        tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
+    connect(save, &QAction::triggered, this, [&](){
+        tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
+    connect(saveAs, &QAction::triggered, this, [&](){
+        tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });
 
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
@@ -326,16 +327,44 @@ MainWindow::fileIO(tFILEIO_TYPE& type)
         break;
 
     case SAVE:
-        openFile = QFileDialog::getSaveFileName(this, tr("Save encryption profile"),
-            startDir, tr("Profile (*.ini);;All Files (*)"));
-         break;
+        if(!_currentProfile.isEmpty())
+            SaveProfile(_currentProfile);
+        else {
+            _currentProfile = QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
+                startDir, tr("Profile (*.ini);;All Files (*)"));
+        }
+        break;
 
     case SAVEAS:
-        openFile = QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
+        _currentProfile = QFileDialog::getSaveFileName(this, tr("Save encryption profile As"),
             startDir, tr("Profile (*.ini);;All Files (*)"));
         break;
     }
 
+    SaveProfileAs(_currentProfile);
     if(!openFile.isNull())
         _profile->lastDir = QFileInfo(openFile).path();
+}
+
+void
+MainWindow::SaveProfileAs(QString& path)
+{
+    _currentProfile = path;
+    QSettings _settings(_currentProfile, QSettings::IniFormat);
+    qDebug("%s", qPrintable(_currentProfile));
+    _settings.beginGroup("MAINUI");
+
+    _settings.endGroup();
+    _settings.beginGroup("ENCRYPTOPTION");
+    _settings.setValue("mode", _profile->mode);
+
+    _settings.setValue("preserveFile", _profile->preserveFile);
+    _settings.setValue("setTargetDir", _profile->setTargetDir);
+    _settings.setValue("targetDir", _profile->targetDir);
+
+    _settings.setValue("defaultProf", _profile->defProfile);
+    _settings.setValue("lastDir", _profile->lastDir);
+
+    _settings.endGroup();
+    _settings.sync();
 }

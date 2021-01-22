@@ -61,6 +61,9 @@ class MainWindow : public QMainWindow
     void profile(void);
     void fileIO(tFILEIO_TYPE&);
 
+    void SaveProfile(QString&);
+    void SaveProfileAs(QString&);
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
