@@ -158,12 +158,13 @@ MainWindow::onCustomContextMenu(const QPoint& point)
     auto* action2 = contextMenu->addAction(tr("Clear Selected"));
 
     connect(action, &QAction::triggered, this, [this, &list](){ decryptSelected(list); });
-    connect(action1, &QAction::triggered, this, [this, &list](){ testfunc1(list); });
+    connect(action1, &QAction::triggered, this, [this, &list](){ encryptSelected(list); });
     connect(action2, &QAction::triggered, this, &MainWindow::clearSelected);
 
     if(list.size() < 1) {
         action->setDisabled(true);
         action1->setDisabled(true);
+
         encryptItems->setDisabled(true);
         decryptItems->setDisabled(true);
         clearItems->setDisabled(true);
@@ -175,7 +176,7 @@ MainWindow::onCustomContextMenu(const QPoint& point)
 }
 
 void
-MainWindow::testfunc1(QList<QModelIndex>& list)
+MainWindow::encryptSelected(QList<QModelIndex>& list)
 {
     if(_pwdlg->exec() == QDialog::Accepted) {
         for (int i = 0; i < list.size(); i++) {
@@ -256,8 +257,10 @@ MainWindow::setMainMenu()
 
     connect(open, &QAction::triggered, this, [&](){
         tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
+
     connect(save, &QAction::triggered, this, [&](){
         tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
+
     connect(saveAs, &QAction::triggered, this, [&](){
         tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });
 
@@ -301,7 +304,7 @@ void
 MainWindow::encryptAfter()
 {
     auto list = treeView->selectionModel()->selectedIndexes();
-    testfunc1(list);
+    encryptSelected(list);
 }
 
 void

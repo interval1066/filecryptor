@@ -49,7 +49,7 @@ class MainWindow : public QMainWindow
 
     std::unique_ptr<AboutDlg> _about;
 
-    void testfunc1(QList<QModelIndex>&);
+    void encryptSelected(QList<QModelIndex>&);
     void clearSelected(void);
     void decryptSelected(QList<QModelIndex>&);
 
