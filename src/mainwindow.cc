@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
     serializeSettings(tSERIALIZE_SETTINGS_TYPE::GET_ENTER);
+
     resize(_winx, _winy);
 
     initUI();
@@ -288,9 +289,13 @@ MainWindow::serializeSettings(tSERIALIZE_SETTINGS_TYPE type)
         case tSERIALIZE_SETTINGS_TYPE::GET_ENTER:
         {
             _settings.beginGroup("MAINUI");
+            int winx = _settings.value("winx").toInt();
+            int winy = _settings.value("winy").toInt();
 
-            _winx = _settings.value("winx").toInt();
-            _winy = _settings.value("winy").toInt();
+            if((winx > 1) && (winy > 1)) {
+                _winx = winx;
+                _winy = winy;
+            }
 
             _settings.endGroup();
             _settings.beginGroup("ENCRYPTOPTION");
