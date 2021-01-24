@@ -22,9 +22,19 @@ enum tFILEIO_TYPE
     OPEN, SAVE, SAVEAS
 };
 
+enum tSERIALIZE_SETTINGS_TYPE
+{
+    GET_ENTER,
+    SAVE_EXIT,
+    GET_PROFILE,
+    SAVE_PROFILE,
+    SAVE_PROFILE_AS
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
     int _winx, _winy;
     QString _currentProfile;
     QTreeView* treeView;
@@ -61,8 +71,7 @@ class MainWindow : public QMainWindow
     void profile(void);
     void fileIO(tFILEIO_TYPE&);
 
-    void SaveProfile(void);
-    void SaveProfileAs(QString&);
+    void serializeSettings(tSERIALIZE_SETTINGS_TYPE);
 
 public:
     MainWindow(QWidget *parent = nullptr);
