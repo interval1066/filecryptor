@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     int _winx, _winy;
+    bool _bnoProfile;
     QString _currentProfile;
     QTreeView* treeView;
 
