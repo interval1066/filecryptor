@@ -12,12 +12,16 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     _winx(700), _winy(500),
+    _bnoProfile(true),
     _profile(std::make_shared<encryptor::tPROFILE>()),
     _pwdlg(std::make_unique<PWDialog>()),
     _about(std::make_unique<AboutDlg>())
 {
     _profdialog = std::make_unique<ProfsDlg>(_profile, this);
     serializeSettings(tSERIALIZE_SETTINGS_TYPE::GET_ENTER);
+
+    if(_profile->mode)
+        _bnoProfile = false;
 
     resize(_winx, _winy);
 
@@ -255,6 +259,7 @@ MainWindow::fileIO(tFILEIO_TYPE& type)
         openFile = QFileDialog::getOpenFileName(this,
             tr("Open encryption profile"),
             startDir, tr("Profile (*.ini);;All Files (*)"));
+            serializeSettings(tSERIALIZE_SETTINGS_TYPE::GET_PROFILE);
         break;
 
     case SAVE:
@@ -337,14 +342,6 @@ MainWindow::serializeSettings(tSERIALIZE_SETTINGS_TYPE type)
 
         case tSERIALIZE_SETTINGS_TYPE::SAVE_PROFILE_AS:
         {
-            int hsize = size().height();
-            int wsize = size().width();
-
-            _settings.beginGroup("MAINUI");
-            _settings.setValue("winx", QString::number(wsize));
-            _settings.setValue("winy", QString::number(hsize));
-
-            _settings.endGroup();
             _settings.beginGroup("ENCRYPTOPTION");
             _settings.setValue("mode", _profile->mode);
 
@@ -359,14 +356,21 @@ MainWindow::serializeSettings(tSERIALIZE_SETTINGS_TYPE type)
             _settings.endGroup();
             _settings.sync();
 
-            break;
         }
+        break;
         case tSERIALIZE_SETTINGS_TYPE::GET_PROFILE:
+        _profile->preserveFile = _settings.value("preserveFile").toInt();
+        _profile->makeDefault = _settings.value("makeDefault").toInt();
+        _profile->setTargetDir = _settings.value("setTargetDir").toInt();
+
+        _profile->targetDir = _settings.value("targetDir").toString();
+        _profile->defProfile = _settings.value("defaultProf").toString();
+        _profile->lastDir = _settings.value("lastDir").toString();
         break;
 
         case tSERIALIZE_SETTINGS_TYPE::SAVE_PROFILE:
         case tSERIALIZE_SETTINGS_TYPE::SAVE_EXIT:
-        {
+        {            
             int hsize = size().height();
             int wsize = size().width();
             _settings.beginGroup("MAINUI");
@@ -375,18 +379,17 @@ MainWindow::serializeSettings(tSERIALIZE_SETTINGS_TYPE type)
             _settings.setValue("winy", QString::number(hsize));
             _settings.endGroup();
 
-            _settings.beginGroup("ENCRYPTOPTION");
-            _settings.setValue("mode", _profile->mode);
-            _settings.setValue("preserveFile", _profile->preserveFile);
+            if(1 == _profile->makeDefault) {
+                _settings.beginGroup("ENCRYPTOPTION");
+                _settings.setValue("mode", _profile->mode);
 
-            _settings.setValue("setTargetDir", _profile->setTargetDir);
-            _currentProfile = settings;
-            _settings.setValue("targetDir", _profile->targetDir);
+                _settings.setValue("preserveFile", _profile->preserveFile);
+                _settings.setValue("setTargetDir", _profile->setTargetDir);
+                _settings.setValue("targetDir", _profile->targetDir);
 
-            _settings.setValue("defaultProf", _profile->defProfile);
-            _settings.setValue("lastDir", _profile->lastDir);
-            _settings.endGroup();
-
+                _settings.setValue("lastDir", _profile->lastDir);
+                _settings.endGroup();
+            }
             _settings.sync();
         }
         break;
