@@ -72,101 +72,16 @@ ProfsDlg::enableTargetDir(bool bEnable)
 void
 ProfsDlg::populateGui()
 {
-    switch(_prof->mode) {
-    case encryptor::MODE_ECB:
-        radio1->setChecked(true);
-        _prof->mode = encryptor::MODE_ECB;
-        break;
-
-    case encryptor::MODE_CBC:
-        radio2->setChecked(true);
-        _prof->mode = encryptor::MODE_CBC;
-        break;
-
-    case encryptor::MODE_CFB:
-        radio3->setChecked(true);
-        _prof->mode = encryptor::MODE_CFB;
-        break;
-
-    case encryptor::MODE_OFB:
-        radio4->setChecked(true);
-        _prof->mode = encryptor::MODE_OFB;
-        break;
-
-    case encryptor::MODE_CTR:
-        radio5->setChecked(true);
-        _prof->mode = encryptor::MODE_CTR;
-        break;
-    }
-
-    if(_prof->preserveFile == 1) {
-        saveOriginal->setChecked(true);
-        _prof->preserveFile = 1;
-    }
-    else {
-            saveOriginal->setChecked(false);
-            _prof->preserveFile = 0;
-        }
-
-    if(_prof->makeDefault == 1) {
-        defProfile->setChecked(true);
-        _prof->makeDefault = 1;
-    }
-    else {
-        defProfile->setChecked(false);
-        _prof->makeDefault = 0;
-    }
-
-    if(_prof->setTargetDir == 1) {
-        targetDir->setChecked(true);
-        dirEdit->setText(_prof->targetDir);
-        enableTargetDir(true);
-    }
-    else {
-         targetDir->setChecked(false);
-         dirEdit->setText("");
-         enableTargetDir(false);
-    }
 }
 
 void
 ProfsDlg::populateStruct()
 {
-    if(radio1->isChecked())
-        _prof->mode = encryptor::MODE_ECB;
-    else if(radio2->isChecked())
-        _prof->mode = encryptor::MODE_CBC;
-    else if(radio3->isChecked())
-        _prof->mode = encryptor::MODE_CFB;
-    else if(radio4->isChecked())
-        _prof->mode = encryptor::MODE_OFB;
-    else
-        _prof->mode = encryptor::MODE_CTR;
-
-    (saveOriginal->isChecked()) ?
-        _prof->preserveFile = 1 :
-        _prof->preserveFile = 0;
-
-    (defProfile->isChecked())?
-        _prof->makeDefault = 1 :
-        _prof->makeDefault = 0;
-
-    if(targetDir->isChecked()) {
-        _prof->setTargetDir = 1;
-        _prof->targetDir = dirEdit->text();
-    }
-    else {
-        _prof->setTargetDir = 0;
-        _prof->targetDir = "";
-    }
 }
 
 void
 ProfsDlg::selectDir()
 {
-    _prof->targetDir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-        QDir::homePath(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    dirEdit->setText(_prof->targetDir);
 }
 
 void ProfsDlg::accept()

@@ -12,7 +12,8 @@ SOURCES += \
     src/mainwindow.cc \
     src/profsdlg.cc \
     src/pwdlg.cc \
-    src/qaesencryption.cc
+    src/qaesencryption.cc \
+    src/settings.cc
 
 HEADERS += \
     include/aboutdlg.h \
@@ -24,7 +25,8 @@ HEADERS += \
     include/profile.h \
     include/profsdlg.h \
     include/pwdlg.h \
-    include/qaesencryption.h
+    include/qaesencryption.h \
+    include/settings.h
 
 RESOURCES += \
     filrcrypt.qrc

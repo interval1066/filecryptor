@@ -1,4 +1,4 @@
-#include "include/mainwindow.h"
+#include <include/mainwindow.h>
 #include <QHeaderView>
 #include <QFile>
 #include <QStandardPaths>
@@ -12,25 +12,26 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     _winx(700), _winy(500),
-    _bnoProfile(true),
-    _profile(std::make_shared<encryptor::tPROFILE>()),
     _pwdlg(std::make_unique<PWDialog>()),
     _about(std::make_unique<AboutDlg>())
 {
-    _profdialog = std::make_unique<ProfsDlg>(_profile, this);
-    serializeSettings(tSERIALIZE_SETTINGS_TYPE::GET_ENTER);
+    iSettings::getSettings(_prof);
+    if((_prof._placement.x() > 10) &&
+        (_prof._placement.y() > 10)) {
 
-    if(_profile->mode)
-        _bnoProfile = false;
+        resize(_prof._placement.x(),_prof._placement.y());
+    }
 
     resize(_winx, _winy);
-
     initUI();
 }
 
 MainWindow::~MainWindow()
 {
-    serializeSettings(tSERIALIZE_SETTINGS_TYPE::SAVE_EXIT);
+    _prof._placement.setX(geometry().width());
+    _prof._placement.setY(geometry().height());
+
+    iSettings::putSettings(_prof);
 }
 
 void
@@ -186,20 +187,20 @@ MainWindow::setMainMenu()
     auto* aboutApp = new QAction("&About Encyrptor", this);
     about->addAction(aboutApp);
 
-    connect(open, &QAction::triggered, this, [&](){
+    /*connect(open, &QAction::triggered, this, [&](){
         tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
 
     connect(save, &QAction::triggered, this, [&](){
         tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
 
     connect(saveAs, &QAction::triggered, this, [&](){
-        tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });
+        tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });*/
 
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
 
-    connect(prefs, &QAction::triggered, this, &MainWindow::profile);
+    //connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
 
@@ -236,162 +237,4 @@ MainWindow::encryptAfter()
 {
     auto list = treeView->selectionModel()->selectedIndexes();
     encryptSelected(list);
-}
-
-void
-MainWindow::profile()
-{
-    if(_profdialog->exec() == QDialog::Accepted) { }
-    _profile = _profdialog->getProfile();
-}
-
-void
-MainWindow::fileIO(tFILEIO_TYPE& type)
-{
-    QString startDir, openFile;
-    if(_profile->lastDir.size() < 1)
-        startDir = QDir::homePath();
-    else
-        startDir = _profile->lastDir;
-
-    switch(type) {
-    case OPEN:
-        openFile = QFileDialog::getOpenFileName(this,
-            tr("Open encryption profile"),
-            startDir, tr("Profile (*.ini);;All Files (*)"));
-            serializeSettings(tSERIALIZE_SETTINGS_TYPE::GET_PROFILE);
-        break;
-
-    case SAVE:
-        if(!_currentProfile.isEmpty())
-            serializeSettings(tSERIALIZE_SETTINGS_TYPE::SAVE_PROFILE);
-        else {
-            _currentProfile = QFileDialog::getSaveFileName(this,
-                tr("Save encryption profile As"),
-                startDir, tr("Profile (*.ini);;All Files (*)"));
-        }
-        break;
-
-    case SAVEAS:
-        _currentProfile = QFileDialog::getSaveFileName(this,
-            tr("Save encryption profile As"),
-            startDir, tr("Profile (*.ini);;All Files (*)"));
-        break;
-    }
-
-    if(!openFile.isNull())
-        _profile->lastDir = QFileInfo(openFile).path();
-}
-
-void
-MainWindow::serializeSettings(tSERIALIZE_SETTINGS_TYPE type)
-{
-    auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-    auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    QSettings _settings(settings + "/" + appname + ".ini", QSettings::IniFormat);
-
-    switch(type) {
-        case tSERIALIZE_SETTINGS_TYPE::GET_ENTER:
-        {
-            _settings.beginGroup("MAINUI");
-            int winx = _settings.value("winx").toInt();
-            int winy = _settings.value("winy").toInt();
-
-            if((winx > 1) && (winy > 1)) {
-                _winx = winx;
-                _winy = winy;
-            }
-
-            _settings.endGroup();
-            _settings.beginGroup("ENCRYPTOPTION");
-            int mode = _settings.value("mode").toInt();
-
-            switch(mode) {
-                case encryptor::MODE_ECB:
-                    _profile->mode = encryptor::MODE_ECB;
-                    break;
-
-                case encryptor::MODE_CBC:
-                    _profile->mode = encryptor::MODE_CBC;
-                    break;
-
-                case encryptor::MODE_CFB:
-                    _profile->mode = encryptor::MODE_CFB;
-                    break;
-
-                case encryptor::MODE_OFB:
-                    _profile->mode = encryptor::MODE_OFB;
-                    break;
-
-                case encryptor::MODE_CTR:
-                    _profile->mode = encryptor::MODE_CTR;
-                    break;
-            }
-
-            _profile->preserveFile = _settings.value("preserveFile").toInt();
-            _profile->makeDefault = _settings.value("makeDefault").toInt();
-            _profile->setTargetDir = _settings.value("setTargetDir").toInt();
-
-            _profile->targetDir = _settings.value("targetDir").toString();
-            _profile->defProfile = _settings.value("defaultProf").toString();
-            _profile->lastDir = _settings.value("lastDir").toString();
-
-            _settings.endGroup();
-        }
-        break;
-
-        case tSERIALIZE_SETTINGS_TYPE::SAVE_PROFILE_AS:
-        {
-            _settings.beginGroup("ENCRYPTOPTION");
-            _settings.setValue("mode", _profile->mode);
-
-            _settings.setValue("preserveFile", _profile->preserveFile);
-            _settings.setValue("makeDefault", _profile->makeDefault);
-            _settings.setValue("setTargetDir", _profile->setTargetDir);
-
-            _settings.setValue("targetDir", _profile->targetDir);
-            _settings.setValue("defaultProf", _profile->defProfile);
-            _settings.setValue("lastDir", _profile->lastDir);
-
-            _settings.endGroup();
-            _settings.sync();
-
-        }
-        break;
-        case tSERIALIZE_SETTINGS_TYPE::GET_PROFILE:
-        _profile->preserveFile = _settings.value("preserveFile").toInt();
-        _profile->makeDefault = _settings.value("makeDefault").toInt();
-        _profile->setTargetDir = _settings.value("setTargetDir").toInt();
-
-        _profile->targetDir = _settings.value("targetDir").toString();
-        _profile->defProfile = _settings.value("defaultProf").toString();
-        _profile->lastDir = _settings.value("lastDir").toString();
-        break;
-
-        case tSERIALIZE_SETTINGS_TYPE::SAVE_PROFILE:
-        case tSERIALIZE_SETTINGS_TYPE::SAVE_EXIT:
-        {            
-            int hsize = size().height();
-            int wsize = size().width();
-            _settings.beginGroup("MAINUI");
-
-            _settings.setValue("winx", QString::number(wsize));
-            _settings.setValue("winy", QString::number(hsize));
-            _settings.endGroup();
-
-            if(1 == _profile->makeDefault) {
-                _settings.beginGroup("ENCRYPTOPTION");
-                _settings.setValue("mode", _profile->mode);
-
-                _settings.setValue("preserveFile", _profile->preserveFile);
-                _settings.setValue("setTargetDir", _profile->setTargetDir);
-                _settings.setValue("targetDir", _profile->targetDir);
-
-                _settings.setValue("lastDir", _profile->lastDir);
-                _settings.endGroup();
-            }
-            _settings.sync();
-        }
-        break;
-    }
 }

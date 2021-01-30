@@ -6,6 +6,7 @@
 #include <QStandardPaths>
 #include <QFileInfo>
 #include <memory>
+#include <include/profile.h>
 
 #define GETPROFILE() static_cast<encryptor::tPROFILE*>(static_cast<void*>(s.getProfile()))
 
@@ -28,8 +29,11 @@ protected:
 public:
     iSettings(Profile& profile)
     {
-        _appSettings = std::unique_ptr<QSettings>();
         _profile = std::make_unique<Profile>(profile);
+        auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+        auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+        _appSettings = std::make_unique<QSettings>(settings + "/" + appname + ".ini", QSettings::IniFormat);
     }
 
     ~iSettings()
@@ -37,13 +41,8 @@ public:
         _appSettings->sync();
     }
 
-    void Init()
-    {
-        auto appname = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
-        auto settings = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        _appSettings = std::make_unique<QSettings>();
-    }
-
+    static void getSettings(encryptor::tPROFILE&);
+    static void putSettings(encryptor::tPROFILE&);
     void** getProfile(void) { return _profile.get()->getProfile(); }
 };
 

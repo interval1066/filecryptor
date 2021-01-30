@@ -11,11 +11,12 @@
 #include <QFileInfo>
 #include <QFileDialog>
 #include <memory>
-#include "encryptitemmodel.h"
-#include "pwdlg.h"
-#include "aboutdlg.h"
-#include "profsdlg.h"
-#include "profile.h"
+#include <include/encryptitemmodel.h>
+#include <include/pwdlg.h>
+#include <include/aboutdlg.h>
+#include <include/profsdlg.h>
+#include <include/profile.h>
+#include <include/settings.h>
 
 enum tFILEIO_TYPE
 {
@@ -36,43 +37,36 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     int _winx, _winy;
-    bool _bnoProfile;
     QString _currentProfile;
+    encryptor::tPROFILE _prof;
+
     QTreeView* treeView;
-
     EncryptItemModel* itemModel;
-
     QMenuBar* mainMenu;
+
     QMenu* file;
     QMenu* encrypt;
-
     QMenu* about;
+
     QStatusBar* statusBar;
     QAction* aboutAct;
-
     QAction* encryptItems;
+
     QAction* decryptItems;
     QAction* clearItems;
-
-    std::shared_ptr<encryptor::tPROFILE> _profile;
     std::unique_ptr<ProfsDlg> _profdialog;
+
     std::unique_ptr<PWDialog> _pwdlg;
-
     std::unique_ptr<AboutDlg> _about;
-
     void encryptSelected(QList<QModelIndex>&);
+
     void clearSelected(void);
     void decryptSelected(QList<QModelIndex>&);
-
     void setMainMenu(void);
+
     void aboutCryptor(void);
     bool eventFilter(QObject*, QEvent*) override;
-
     void encryptAfter(void);
-    void profile(void);
-    void fileIO(tFILEIO_TYPE&);
-
-    void serializeSettings(tSERIALIZE_SETTINGS_TYPE);
 
 public:
     MainWindow(QWidget *parent = nullptr);

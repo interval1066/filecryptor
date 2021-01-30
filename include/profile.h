@@ -2,6 +2,7 @@
 #define PROFILE_H
 
 #include <QString>
+#include <QPoint>
 
 namespace encryptor
 {
@@ -16,13 +17,14 @@ namespace encryptor
 
     struct tPROFILE
     {
-        tAESMODES mode;
-        qint32 preserveFile;
-        qint32 makeDefault;
-        qint32 setTargetDir;
-        QString targetDir;
-        QString defProfile;
-        QString lastDir;
+        QPoint          _placement;
+        tAESMODES       _mode;
+        qint32          _preserveFile;
+        qint32          _makeDefault;
+        qint32          _setTargetDir;
+        QString         _targetDir;
+        QString         _defProfile;
+        QString         _lastDir;
     };
 }
 
