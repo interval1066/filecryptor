@@ -3,7 +3,7 @@ Simple, per item encryption application in Qt for Linux. Just wanted a simple ap
 
 No PKI, no super infrastructure stuff, just something with a nice interface to experiment with. I envisioned using this as a starting point for porting different encryption algorithms to various platforms. IN NO WAY would I use this as my main encryption application, there are a lot better applications for that. Might not be a bad starting point for better application though.
 
-Added a new settings manager class that takes an arbitrary settings object to encaspulate the settings. Never felt right about having to couple that with the rest of the system. Finally settled on a facade for it.
+Added a new settings manager class that takes an arbitrary settings object to encaspulate the settings. Never felt right about having to couple that with the rest of the system. Finally settled on a facade pattern for it.
 
 ## To do:
 - [X] Profile serialization way too complex, implement as a decorator pattern
