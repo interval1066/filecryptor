@@ -72,6 +72,48 @@ ProfsDlg::enableTargetDir(bool bEnable)
 void
 ProfsDlg::populateGui()
 {
+    encryptor::tAESMODES mode = _prof._mode;
+    switch(mode) {
+    case encryptor::MODE_ECB:
+        radio1->setChecked(true);
+        break;
+
+    case encryptor::MODE_CBC:
+        radio2->setChecked(true);
+        break;
+
+    case encryptor::MODE_CFB:
+        radio3->setChecked(true);
+        break;
+
+    case encryptor::MODE_OFB:
+        radio4->setChecked(true);
+        break;
+
+    case encryptor::MODE_CTR:
+        radio5->setChecked(true);
+        break;
+
+    default:
+        radio1->setChecked(true);
+        break;
+    }
+
+    (_prof._preserveFile == 1)? saveOriginal->setChecked(true) :
+        saveOriginal->setChecked(false);
+
+    (_prof._makeDefault == 1)? defProfile->setChecked(true) :
+        defProfile->setChecked(false);
+
+    bool enabled = false;
+    (_prof._setTargetDir == 1)? enabled = true :
+        enabled = false;
+
+    dirSelect->setEnabled(enabled);
+    targetDir->setChecked(enabled);
+    dirEdit->setEnabled(enabled);
+
+    dirEdit->setText(_prof._targetDir);
 }
 
 void
