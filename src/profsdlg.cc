@@ -77,11 +77,42 @@ ProfsDlg::populateGui()
 void
 ProfsDlg::populateStruct()
 {
+    if(radio1->isChecked())
+        _prof._mode = encryptor::MODE_ECB;
+    else if(radio2->isChecked())
+        _prof._mode = encryptor::MODE_CBC;
+    else if(radio3->isChecked())
+        _prof._mode = encryptor::MODE_CFB;
+    else if(radio4->isChecked())
+        _prof._mode = encryptor::MODE_OFB;
+    else if(radio5->isChecked())
+        _prof._mode = encryptor::MODE_CTR;
+
+    saveOriginal->isChecked()? _prof._preserveFile = 1 :
+        _prof._preserveFile = 0;
+
+    defProfile->isChecked()? _prof._makeDefault = 1 :
+        _prof._makeDefault = 0;
+
+    targetDir->isChecked()? _prof._setTargetDir = 1:
+        _prof._setTargetDir = 0;
+
+    _prof._targetDir = dirEdit->text();
+
 }
 
 void
 ProfsDlg::selectDir()
 {
+    if(_prof._lastDir.size() < 1)
+        QDir::currentPath();
+
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
+        _prof._lastDir, QFileDialog::ShowDirsOnly
+        | QFileDialog::DontResolveSymlinks);
+
+     dirEdit->setText(dir);
+     _prof._lastDir = dir;
 }
 
 void ProfsDlg::accept()

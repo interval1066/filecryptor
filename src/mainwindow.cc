@@ -31,7 +31,6 @@ MainWindow::~MainWindow()
 {
     _prof._placement.setX(geometry().width());
     _prof._placement.setY(geometry().height());
-
     iSettings::putSettings(_prof);
 }
 
