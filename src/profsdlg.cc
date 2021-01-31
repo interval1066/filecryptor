@@ -5,7 +5,8 @@ ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget* parent) :
    QDialog(parent), _prof(prof)
 {
     createGridGroupBox();
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, this);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
+        QDialogButtonBox::Cancel, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
