@@ -68,6 +68,8 @@ class MainWindow : public QMainWindow
     bool eventFilter(QObject*, QEvent*) override;
     void encryptAfter(void);
 
+    void profile();
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

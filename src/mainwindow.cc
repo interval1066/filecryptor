@@ -16,13 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
     _about(std::make_unique<AboutDlg>())
 {
     iSettings::getSettings(_prof);
+    _profdialog = std::make_unique<ProfsDlg>(_prof, this);
     if((_prof._placement.x() > 10) &&
         (_prof._placement.y() > 10)) {
 
         resize(_prof._placement.x(),_prof._placement.y());
     }
-
-    resize(_winx, _winy);
+    else
+        resize(_winx, _winy);
     initUI();
 }
 
@@ -200,7 +201,7 @@ MainWindow::setMainMenu()
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
 
-    //connect(prefs, &QAction::triggered, this, &MainWindow::profile);
+    connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
 
@@ -209,6 +210,12 @@ MainWindow::aboutCryptor()
 {
     if(_about->exec() == QDialog::Accepted)
         _about->close();
+}
+
+void
+MainWindow::profile()
+{
+    if(_profdialog->exec() == QDialog::Accepted) {}
 }
 
 bool

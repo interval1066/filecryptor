@@ -1,7 +1,7 @@
 ﻿#include <QtWidgets>
 #include "include/profsdlg.h"
 
-ProfsDlg::ProfsDlg(std::shared_ptr<encryptor::tPROFILE>& prof, QWidget* parent) :
+ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget* parent) :
    QDialog(parent), _prof(prof)
 {
     createGridGroupBox();

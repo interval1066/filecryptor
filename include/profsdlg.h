@@ -43,14 +43,12 @@ class ProfsDlg : public QDialog
 
     void populateGui(void);
     void populateStruct(void);
-    std::shared_ptr<encryptor::tPROFILE> _prof;
+    encryptor::tPROFILE& _prof;
 
     void accept(void) override;
 
 public:
-    explicit ProfsDlg(std::shared_ptr<encryptor::tPROFILE>&,
-        QWidget* parent = nullptr);
-    std::shared_ptr<encryptor::tPROFILE> getProfile(void) { return _prof; }
+    explicit ProfsDlg(encryptor::tPROFILE&, QWidget* parent = nullptr);
 
 private slots:
     void enableTargetDir(bool);
