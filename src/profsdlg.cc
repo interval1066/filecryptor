@@ -1,5 +1,5 @@
 ﻿#include <QtWidgets>
-#include "include/profsdlg.h"
+#include <include/profsdlg.h>
 
 ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget* parent) :
    QDialog(parent), _prof(prof)
@@ -15,7 +15,7 @@ ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget* parent) :
 
     mainLayout->addWidget(buttonBox);
     setLayout(mainLayout);
-    resize(480, 140);
+    setFixedSize(QSize(520, 240));
 
     setWindowTitle(tr("filecryptor"));
     populateGui();
