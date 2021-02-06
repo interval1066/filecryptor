@@ -16,7 +16,6 @@
 #include <include/aboutdlg.h>
 #include <include/profsdlg.h>
 #include <include/profile.h>
-#include <include/settings.h>
 
 enum tFILEIO_TYPE
 {

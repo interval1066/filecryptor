@@ -12,26 +12,24 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     _winx(700), _winy(500),
+    _profdialog(std::make_unique<ProfsDlg>()),
     _pwdlg(std::make_unique<PWDialog>()),
     _about(std::make_unique<AboutDlg>())
 {
-    iSettings::getSettings(_prof);
-    _profdialog = std::make_unique<ProfsDlg>(_prof, this);
-    if((_prof._placement.x() > 10) &&
-        (_prof._placement.y() > 10)) {
-
-        resize(_prof._placement.x(),_prof._placement.y());
-    }
+    if((_profdialog->GetProfile()->_placement.x() > 10) &&
+        (_profdialog->GetProfile()->_placement.y() > 10))
+        resize(_profdialog->GetProfile()->_placement.x(),
+               _profdialog->GetProfile()->_placement.y());
     else
         resize(_winx, _winy);
+
     initUI();
 }
 
 MainWindow::~MainWindow()
 {
-    _prof._placement.setX(geometry().width());
-    _prof._placement.setY(geometry().height());
-    iSettings::putSettings(_prof);
+    _profdialog->GetProfile()->_placement.setX(geometry().width());
+    _profdialog->GetProfile()->_placement.setY(geometry().height());
 }
 
 void
@@ -184,22 +182,14 @@ MainWindow::setMainMenu()
     auto* appHelp = new QAction("&Help");
 
     about->addAction(appHelp);
+    about->addSeparator();
     auto* aboutApp = new QAction("&About Encyrptor", this);
+
     about->addAction(aboutApp);
-
-    /*connect(open, &QAction::triggered, this, [&](){
-        tFILEIO_TYPE type = OPEN; MainWindow::fileIO(type); });
-
-    connect(save, &QAction::triggered, this, [&](){
-        tFILEIO_TYPE type = SAVE; MainWindow::fileIO(type); });
-
-    connect(saveAs, &QAction::triggered, this, [&](){
-        tFILEIO_TYPE type = SAVEAS; MainWindow::fileIO(type); });*/
-
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
     connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
-    connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
 
+    connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
     connect(prefs, &QAction::triggered, this, &MainWindow::profile);
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }

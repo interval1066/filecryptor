@@ -1,9 +1,9 @@
-﻿#include <QtWidgets>
-#include <include/profsdlg.h>
+﻿#include <include/profsdlg.h>
 
-ProfsDlg::ProfsDlg(encryptor::tPROFILE& prof, QWidget* parent) :
-   QDialog(parent), _prof(prof)
+ProfsDlg::ProfsDlg(QWidget* parent) :
+   QDialog(parent)
 {
+    iSettings::getSettings(_prof);
     createGridGroupBox();
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
         QDialogButtonBox::Cancel, this);
@@ -141,7 +141,7 @@ ProfsDlg::populateStruct()
         _prof._setTargetDir = 0;
 
     _prof._targetDir = dirEdit->text();
-
+    iSettings::putSettings(_prof);
 }
 
 void
@@ -160,6 +160,7 @@ ProfsDlg::selectDir()
 
 void ProfsDlg::accept()
 {
+    iSettings::putSettings(_prof);
     populateStruct();
     QDialog::accept();
 }

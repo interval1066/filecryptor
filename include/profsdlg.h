@@ -1,9 +1,11 @@
 ﻿#ifndef PROFSDLG_H_
 #define PROFSDLG_H_
 
+#include <QtWidgets>
 #include <QDialog>
 #include <QFileSelector>
-#include "profile.h"
+#include <include/settings.h>
+#include <include/profile.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -43,12 +45,13 @@ class ProfsDlg : public QDialog
 
     void populateGui(void);
     void populateStruct(void);
-    encryptor::tPROFILE& _prof;
+    encryptor::tPROFILE _prof;
 
     void accept(void) override;
 
 public:
-    explicit ProfsDlg(encryptor::tPROFILE&, QWidget* parent = nullptr);
+    explicit ProfsDlg(QWidget* parent = nullptr);
+    encryptor::tPROFILE* GetProfile(void) { return &_prof; }
 
 private slots:
     void enableTargetDir(bool);
