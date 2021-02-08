@@ -8,7 +8,7 @@ Added a new settings manager class that takes an arbitrary settings object to en
 ## To do:
 - [X] Profile serialization way too complex, implement as a decorator pattern
 - [ ] Switch over or add cmake style build scripts
-- [ ] Workout of profile action (still needs a little design work)
+- [X] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
 - [ ] Add menu accelerators
 - [ ] nautilus/thunar/dolphin right click context integration(?)
