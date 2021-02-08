@@ -3,8 +3,8 @@
 ProfsDlg::ProfsDlg(QWidget* parent) :
    QDialog(parent)
 {
-    iSettings::getSettings(_prof);
     createGridGroupBox();
+
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
         QDialogButtonBox::Cancel, this);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -18,7 +18,6 @@ ProfsDlg::ProfsDlg(QWidget* parent) :
     setFixedSize(QSize(520, 240));
 
     setWindowTitle(tr("filecryptor"));
-    populateGui();
 }
 
 void
@@ -141,7 +140,6 @@ ProfsDlg::populateStruct()
         _prof._setTargetDir = 0;
 
     _prof._targetDir = dirEdit->text();
-    iSettings::putSettings(_prof);
 }
 
 void
@@ -158,9 +156,31 @@ ProfsDlg::selectDir()
      _prof._lastDir = dir;
 }
 
-void ProfsDlg::accept()
+void
+ProfsDlg::accept()
 {
-    iSettings::putSettings(_prof);
     populateStruct();
+    iSettings::putSettings(_prof);
     QDialog::accept();
+}
+
+void
+ProfsDlg::reject()
+{
+    _prof = _profbak;
+    QDialog::reject();
+}
+
+void
+ProfsDlg::showEvent(QShowEvent* e)
+{
+    QDialog::showEvent(e);
+    thisShowEvent();
+}
+
+void
+ProfsDlg::thisShowEvent()
+{
+    iSettings::getSettings(_prof);
+    populateGui();
 }

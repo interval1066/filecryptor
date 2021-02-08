@@ -41,6 +41,19 @@ public:
         _appSettings->sync();
     }
 
+    iSettings(const iSettings& other)
+        : _profile(std::make_unique<Profile>(*other._profile))
+    { }
+
+    iSettings(iSettings&& other) = default;
+    iSettings& operator=(const iSettings& other)
+    {
+        *_profile = *other._profile;
+        return *this;
+    }
+
+    iSettings& operator=(iSettings&&) = default;
+
     static void getSettings(encryptor::tPROFILE&);
     static void putSettings(encryptor::tPROFILE&);
     void** getProfile(void) { return _profile.get()->getProfile(); }

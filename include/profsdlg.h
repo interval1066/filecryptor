@@ -40,14 +40,19 @@ class ProfsDlg : public QDialog
     QCheckBox* targetDir;
 
     QCheckBox* defProfile;
+    encryptor::tPROFILE _prof, _profbak;
     void createHorizontalGroupBox(void);
-    void createGridGroupBox(void);
 
+    void createGridGroupBox(void);
     void populateGui(void);
     void populateStruct(void);
-    encryptor::tPROFILE _prof;
 
     void accept(void) override;
+    void reject(void) override;
+    void thisShowEvent(void);
+
+protected:
+    void showEvent(QShowEvent*) override;
 
 public:
     explicit ProfsDlg(QWidget* parent = nullptr);
