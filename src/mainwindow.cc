@@ -30,6 +30,7 @@ MainWindow::~MainWindow()
 {
     _profdialog->GetProfile()->_placement.setX(geometry().width());
     _profdialog->GetProfile()->_placement.setY(geometry().height());
+    _profdialog->SyncronizeSettings();
 }
 
 void

@@ -3,6 +3,7 @@
 ProfsDlg::ProfsDlg(QWidget* parent) :
    QDialog(parent)
 {
+    iSettings::getSettings(_prof);
     createGridGroupBox();
 
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
@@ -167,7 +168,6 @@ ProfsDlg::accept()
 void
 ProfsDlg::reject()
 {
-    _prof = _profbak;
     QDialog::reject();
 }
 

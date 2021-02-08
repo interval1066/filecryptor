@@ -57,6 +57,7 @@ protected:
 public:
     explicit ProfsDlg(QWidget* parent = nullptr);
     encryptor::tPROFILE* GetProfile(void) { return &_prof; }
+    void SyncronizeSettings(void) { iSettings::putSettings(_prof); }
 
 private slots:
     void enableTargetDir(bool);
