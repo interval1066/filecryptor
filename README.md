@@ -11,6 +11,7 @@ Added a new settings manager class that takes an arbitrary settings object to en
 - [X] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
 - [ ] Add menu accelerators
+- [ ] Integration of high speed data copying Qt apis
 - [ ] nautilus/thunar/dolphin right click context integration(?)
 
 
