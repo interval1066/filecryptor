@@ -155,47 +155,61 @@ void
 MainWindow::setMainMenu()
 {
     auto* file = menuBar()->addMenu("&File");
-    auto* open = new QAction("&Open Profile", this);
-    file->addAction(open);
+    auto* open = new QAction(tr("&Open Profile"), this);
+    open->setStatusTip(tr("Open existing profile"));
 
-    auto* save = new QAction("&Save Profile", this);
+    file->addAction(open);
+    auto* save = new QAction(tr("&Save Profile"), this);
+    save->setStatusTip(tr("Save the current profile"));
+
     file->addAction(save);
-    auto* saveAs = new QAction("&Save Profile As...", this);
+    auto* saveAs = new QAction(tr("&Save Profile As..."), this);
+    saveAs->setStatusTip(tr("Save the current profile with a new name"));
 
     file->addAction(saveAs);
     file->addSeparator();
-    auto* quit = new QAction("&Quit", this);
+    auto* quit = new QAction(tr("&Quit"), this);
 
+    quit->setStatusTip(tr("Quit the application"));
     file->addAction(quit);
-    auto* encrypt = menuBar()->addMenu("&Encryption");
-    encryptItems = new QAction("&Encrypt Selected", this);
+    auto* encrypt = menuBar()->addMenu(tr("&Encryption"));
 
+    encryptItems = new QAction(tr("&Encrypt Selected"), this);
+    encryptItems->setStatusTip(tr("Encrypt the selected items"));
     encrypt->addAction(encryptItems);
+
     encryptItems->setDisabled(true);
-    decryptItems = new QAction("&Decrypt Selected ", this);
+    decryptItems = new QAction(tr("&Decrypt Selected "), this);
+    decryptItems->setStatusTip(tr("Decrypt the selected items"));
 
     encrypt->addAction(decryptItems);
     decryptItems->setDisabled(true);
-    clearItems = new QAction("&Clear Selected ", this);
+    clearItems = new QAction(tr("&Clear Selected "), this);
 
+    clearItems->setStatusTip(tr("Clear the selected items"));
     encrypt->addAction(clearItems);
     encrypt->addSeparator();
-    auto* prefs = new QAction("Encryption &Profile", this);
 
+    auto* prefs = new QAction(tr("Encryption &Profile"), this);
+    prefs->setStatusTip(tr("Displays the profile editor"));
     encrypt->addAction(prefs);
-    auto* about = menuBar()->addMenu("&About");
-    auto* appHelp = new QAction("&Help");
+
+    auto* about = menuBar()->addMenu(tr("&About"));
+    auto* appHelp = new QAction(tr("&Help"));
+    appHelp->setStatusTip(tr("How to use filecryptor"));
 
     about->addAction(appHelp);
     about->addSeparator();
-    auto* aboutApp = new QAction("&About Encyrptor", this);
+    auto* aboutApp = new QAction(tr("&About Encyrptor"), this);
 
+    aboutApp->setStatusTip(tr("Copyright information, etc."));
     about->addAction(aboutApp);
     connect(quit, &QAction::triggered, qApp, QApplication::quit);
-    connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
 
+    connect(encryptItems, &QAction::triggered, this, &MainWindow::encryptAfter);
     connect(clearItems, &QAction::triggered, this, &MainWindow::clearSelected);
     connect(prefs, &QAction::triggered, this, &MainWindow::profile);
+
     connect(aboutApp, &QAction::triggered, this, &MainWindow::aboutCryptor);
  }
 
