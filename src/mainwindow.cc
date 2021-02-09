@@ -120,8 +120,8 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
             QFileInfo file(data);
             if(!file.isDir()) {
 
-                _inputque.push_back(file.absolutePath());
-                _outputque.push_back(file.absolutePath().append(".enc"));
+                _inputque.push_back(file.absoluteFilePath());
+                _outputque.push_back(file.absoluteFilePath().append(".enc"));
             }
         }
         processFiles();
@@ -264,4 +264,5 @@ MainWindow::processFiles()
     worker->setDestinationPaths(_outputque);
 
     local->start();
+
 }
