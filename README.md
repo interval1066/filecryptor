@@ -6,7 +6,7 @@ No PKI, no super infrastructure stuff, just something with a nice interface to e
 Added a new settings manager class that takes an arbitrary settings object to encaspulate the settings. Never felt right about having to couple that with the rest of the system. Finally settled on a facade pattern for it.
 
 ## To do:
-- [X] Profile serialization way too complex, implement as a decorator pattern
+- [X] Profile serialization way too complex, implement as a facade pattern
 - [ ] Switch over or add cmake style build scripts
 - [X] Workout of profile action (still needs a little design work)
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
