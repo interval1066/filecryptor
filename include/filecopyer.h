@@ -16,7 +16,7 @@ class FileCopyer : public QObject
     Q_PROPERTY(QVector<QString> sourcePaths READ sourcePaths WRITE setSourcePaths)
     Q_PROPERTY(QVector<QString> destinationPaths READ destinationPaths WRITE setDestinationPaths)
 
-    static const int DEFAULT_CHUNK_SIZE = 1024 * 1024 * 1;
+    static const int DEFAULT_CHUNK_SIZE = 126976;
     QVector<QString> src, dst;
     qint64 _chunk;
 

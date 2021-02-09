@@ -8,6 +8,7 @@ DEFINES += "_DEBUG"
 SOURCES += \
     src/aboutdlg.cpp \
     src/encryptitemmodel.cc \
+    src/filecopyer.cc \
     src/main.cc \
     src/mainwindow.cc \
     src/profsdlg.cc \
@@ -21,6 +22,7 @@ HEADERS += \
     include/aesni/aesni-enc-ecb.h \
     include/aesni/aesni-key-exp.h \
     include/encryptitemmodel.h \
+    include/filecopyer.h \
     include/mainwindow.h \
     include/profile.h \
     include/profsdlg.h \

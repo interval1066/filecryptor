@@ -109,6 +109,9 @@ MainWindow::onCustomContextMenu(const QPoint& point)
 void
 MainWindow::encryptSelected(QList<QModelIndex>& list)
 {
+    _inputque.clear();
+    _outputque.clear();
+
     if(_pwdlg->exec() == QDialog::Accepted) {
         for (int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
@@ -117,10 +120,11 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
             QFileInfo file(data);
             if(!file.isDir()) {
 
-                qDebug("%s %s", qPrintable(file.completeBaseName() + ".enc"),
-                    qPrintable(file.absolutePath()));
+                _inputque.push_back(file.absolutePath());
+                _outputque.push_back(file.absolutePath().append(".enc"));
             }
         }
+        processFiles();
     }
 }
 
@@ -234,4 +238,16 @@ MainWindow::encryptAfter()
 {
     auto list = treeView->selectionModel()->selectedIndexes();
     encryptSelected(list);
+}
+
+void
+MainWindow::processFiles()
+{
+    auto local = new QThread;
+    auto worker = new FileCopyer(local);
+
+    worker->setSourcePaths(_inputque);
+    worker->setDestinationPaths(_outputque);
+
+    local->start();
 }

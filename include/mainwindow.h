@@ -10,12 +10,14 @@
 #include <QShortcut>
 #include <QFileInfo>
 #include <QFileDialog>
+#include <QVector>
 #include <memory>
 #include <include/encryptitemmodel.h>
 #include <include/pwdlg.h>
 #include <include/aboutdlg.h>
 #include <include/profsdlg.h>
 #include <include/profile.h>
+#include <include/filecopyer.h>
 
 enum tFILEIO_TYPE
 {
@@ -37,37 +39,40 @@ class MainWindow : public QMainWindow
 
     int _winx, _winy;
     QString _currentProfile;
-    encryptor::tPROFILE _prof;
+    QVector<QString> _inputque;
 
+    QVector<QString> _outputque;
+    encryptor::tPROFILE _prof;
     QTreeView* treeView;
+
     EncryptItemModel* itemModel;
     QMenuBar* mainMenu;
-
     QMenu* file;
     QMenu* encrypt;
-    QMenu* about;
 
+    QMenu* about;
     QStatusBar* statusBar;
     QAction* aboutAct;
-    QAction* encryptItems;
 
+    QAction* encryptItems;
     QAction* decryptItems;
     QAction* clearItems;
-    std::unique_ptr<ProfsDlg> _profdialog;
 
+    std::unique_ptr<ProfsDlg> _profdialog;
     std::unique_ptr<PWDialog> _pwdlg;
     std::unique_ptr<AboutDlg> _about;
-    void encryptSelected(QList<QModelIndex>&);
 
+    void encryptSelected(QList<QModelIndex>&);
     void clearSelected(void);
     void decryptSelected(QList<QModelIndex>&);
-    void setMainMenu(void);
 
+    void setMainMenu(void);
     void aboutCryptor(void);
     bool eventFilter(QObject*, QEvent*) override;
-    void encryptAfter(void);
 
-    void profile();
+    void encryptAfter(void);
+    void profile(void);
+    void processFiles(void);
 
 public:
     MainWindow(QWidget *parent = nullptr);

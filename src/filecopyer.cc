@@ -1,5 +1,5 @@
 #include <QDebug>
-#include <filecopyer.h>
+#include <include/filecopyer.h>
 
 FileCopyer::FileCopyer(QThread* _thread)
 {
