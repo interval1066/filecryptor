@@ -14,7 +14,7 @@ No, the code isn't commented. No, its not something I do with production/retail 
 - [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
 - [ ] Add menu accelerators
 - [X] Integration of high speed data copying Qt apis
-- [ ] Add progress dialog for prosessing thread
+- [ ] Add progress dialog for processing thread
 - [ ] nautilus/thunar/dolphin right click context integration(?)
 
 
