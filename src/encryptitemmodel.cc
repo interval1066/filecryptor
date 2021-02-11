@@ -1,4 +1,4 @@
-#include "include/encryptitemmodel.h"
+#include <encryptitemmodel.h>
 
 #include <QApplication>
 #include <QStyle>

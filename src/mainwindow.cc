@@ -113,7 +113,9 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
     _outputque.clear();
 
     if(_pwdlg->exec() == QDialog::Accepted) {
-        for (int i = 0; i < list.size(); i++) {
+        _password = _pwdlg->GetPW();
+        qDebug("%s", qPrintable(_password));
+        /*for(int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
@@ -124,7 +126,7 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
                 _outputque.push_back(file.absoluteFilePath().append(".enc"));
             }
         }
-        processFiles();
+        processFiles();*/
     }
 }
 
@@ -142,6 +144,8 @@ void
 MainWindow::decryptSelected(QList<QModelIndex>& list)
 {
     if(_pwdlg->exec() == QDialog::Accepted) {
+        _password = _pwdlg->GetPW();
+
         for (int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
 

@@ -36,6 +36,7 @@ enum tSERIALIZE_SETTINGS_TYPE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    QString _password;
 
     int _winx, _winy;
     QString _currentProfile;

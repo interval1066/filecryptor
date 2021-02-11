@@ -18,25 +18,29 @@ QT_END_NAMESPACE
 class PWDialog : public QDialog
 {
     Q_OBJECT
-
-    void createFormGroupBox();
-
+    QString _pw;
     enum { NumGridRows = 3, NumButtons = 4 };
 
-    QGroupBox *formGroupBox;
-    QTextEdit *smallEditor;
-    QTextEdit *bigEditor;
+    QMenu*                  fileMenu;
+    QGroupBox*              formGroupBox;
+    QTextEdit*              smallEditor;
 
-    QLabel *labels[NumGridRows];
-    QLineEdit *lineEdits[NumGridRows];
-    QPushButton *buttons[NumButtons];
+    QAction*                exitAction;
+    QTextEdit*              bigEditor;
+    QDialogButtonBox*       buttonBox;
 
-    QDialogButtonBox *buttonBox;
-    QMenu *fileMenu;
-    QAction *exitAction;
+    QLabel*                 labels[NumGridRows];
+    QLineEdit*              lineEdit1;
+    QLineEdit*              lineEdit2;
+    QPushButton*            buttons[NumButtons];
+
+    void createFormGroupBox(void);
+    void accept(void) override;
+    void reject(void) override;
 
 public:
-    PWDialog(QWidget *parent = nullptr);
+    explicit PWDialog(QWidget* parent = nullptr);
+    const QString GetPW(void);
 };
 
 #endif // PWDLG_H
