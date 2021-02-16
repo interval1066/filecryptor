@@ -146,19 +146,24 @@ MainWindow::decryptSelected(QList<QModelIndex>& list)
     if(_pwdlg->exec() == QDialog::Accepted) {
         _password = _pwdlg->GetPW();
 
-        for (int i = 0; i < list.size(); i++) {
+        if(_password.size() > 4) {
+            crypto::RD128 rd128(_password.toLocal8Bit().constData(), _password.length());
+            QString hashedPW = rd128.hexdigest();
+            qDebug("%s", qPrintable(hashedPW));
+        }
+        /*for (int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
             qDebug("%s", qPrintable(data));
-        }
+        }*/
     }
 }
 
 void
 MainWindow::setMainMenu()
 {
-    auto* file = menuBar()->addMenu("&File");
+    auto* file = menuBar()->addMenu(tr("&File"));
     auto* open = new QAction(tr("&Open Profile"), this);
     open->setStatusTip(tr("Open existing profile"));
 

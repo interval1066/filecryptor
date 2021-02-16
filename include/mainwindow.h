@@ -12,12 +12,13 @@
 #include <QFileDialog>
 #include <QVector>
 #include <memory>
-#include <include/encryptitemmodel.h>
-#include <include/pwdlg.h>
-#include <include/aboutdlg.h>
-#include <include/profsdlg.h>
-#include <include/profile.h>
-#include <include/filecopyer.h>
+#include <encryptitemmodel.h>
+#include <pwdlg.h>
+#include <aboutdlg.h>
+#include <profsdlg.h>
+#include <profile.h>
+#include <filecopyer.h>
+#include <crypto/rd128.h>
 
 enum tFILEIO_TYPE
 {
