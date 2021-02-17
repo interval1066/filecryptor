@@ -1,15 +1,36 @@
 #include <QDebug>
-#include <include/filecopyer.h>
+#include <filecopyer.h>
 
-FileCopyer::FileCopyer(QThread* _thread)
+FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir)
 {
     moveToThread(_thread);
     setChunkSize(DEFAULT_CHUNK_SIZE);
-
     QObject::connect(_thread, &QThread::started, this, &FileCopyer::copy);
+
     QObject::connect(this, &FileCopyer::finished, _thread, &QThread::quit);
     QObject::connect(this, &FileCopyer::finished, this, &FileCopyer::deleteLater);
     QObject::connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
+
+    if(profile->_mode == encryptor::MODE_ECB) {
+        try
+        {
+            if (!textInitializationVector.empty())
+            {
+                initializationVector = ivInput.keyRead(textInitializationVector);
+            }
+            else
+            {
+                initializationVector = ivInput.keyRead();
+            }
+        }
+        catch(const std::exception & e)
+        {
+            std::cerr << e.what() << '\n';
+            exit(1);
+        }
+
+    }
+
 }
 
 FileCopyer::~FileCopyer() { }
@@ -60,6 +81,9 @@ void FileCopyer::copy()
         qint64 fSize = srcFile.size();
         while (fSize) {
             const auto data = srcFile.read(chunkSize());
+
+            crypto::BlockCipher* algorithm = new crypto::AES(keyBytes, keyByteSize);
+
             const auto _written = dstFile.write(data);
             if (data.size() == _written) {
                 written += _written;

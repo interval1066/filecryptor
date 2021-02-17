@@ -20,19 +20,24 @@
 #include <filecopyer.h>
 #include <crypto/rd128.h>
 
+enum tENCRYPT_DECRYPT
+{
+    ENCRYPT, DECRYPT
+};
+
 enum tFILEIO_TYPE
 {
     OPEN, SAVE, SAVEAS
 };
 
-enum tSERIALIZE_SETTINGS_TYPE
+/*enum tSERIALIZE_SETTINGS_TYPE
 {
     GET_ENTER,
     SAVE_EXIT,
     GET_PROFILE,
     SAVE_PROFILE,
     SAVE_PROFILE_AS
-};
+};*/
 
 class MainWindow : public QMainWindow
 {
@@ -74,7 +79,7 @@ class MainWindow : public QMainWindow
 
     void encryptAfter(void);
     void profile(void);
-    void processFiles(void);
+    void processFiles(QString&, tENCRYPT_DECRYPT);
 
 public:
     MainWindow(QWidget *parent = nullptr);

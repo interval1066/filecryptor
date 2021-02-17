@@ -114,19 +114,21 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
 
     if(_pwdlg->exec() == QDialog::Accepted) {
         _password = _pwdlg->GetPW();
-        qDebug("%s", qPrintable(_password));
-        /*for(int i = 0; i < list.size(); i++) {
+        crypto::RD128 rd128(_password.toLocal8Bit().constData(), _password.length());
+
+        QString hashedPW = rd128.hexdigest();
+        for(int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
             QFileInfo file(data);
-            if(!file.isDir()) {
 
+            if(!file.isDir()) {
                 _inputque.push_back(file.absoluteFilePath());
                 _outputque.push_back(file.absoluteFilePath().append(".enc"));
             }
         }
-        processFiles();*/
+        processFiles(hashedPW, ENCRYPT);
     }
 }
 
@@ -143,20 +145,26 @@ MainWindow::clearSelected()
 void
 MainWindow::decryptSelected(QList<QModelIndex>& list)
 {
+    _inputque.clear();
+    _outputque.clear();
+
     if(_pwdlg->exec() == QDialog::Accepted) {
         _password = _pwdlg->GetPW();
+        crypto::RD128 rd128(_password.toLocal8Bit().constData(), _password.length());
 
-        if(_password.size() > 4) {
-            crypto::RD128 rd128(_password.toLocal8Bit().constData(), _password.length());
-            QString hashedPW = rd128.hexdigest();
-            qDebug("%s", qPrintable(hashedPW));
-        }
-        /*for (int i = 0; i < list.size(); i++) {
+        QString hashedPW = rd128.hexdigest();
+        for(int i = 0; i < list.size(); i++) {
             auto* item = itemModel->itemFromIndex(list.at(i));
 
             const QString& data = item->accessibleDescription();
-            qDebug("%s", qPrintable(data));
-        }*/
+            QFileInfo file(data);
+
+            if(!file.isDir()) {
+                _inputque.push_back(file.absoluteFilePath().append(".enc"));
+                _outputque.push_back(file.absoluteFilePath());
+            }
+        }
+        processFiles(hashedPW, DECRYPT);
     }
 }
 
@@ -264,10 +272,10 @@ MainWindow::encryptAfter()
 }
 
 void
-MainWindow::processFiles()
+MainWindow::processFiles(QString& pw, tENCRYPT_DECRYPT dir)
 {
     auto local = new QThread;
-    auto worker = new FileCopyer(local);
+    auto worker = new FileCopyer(local, _profdialog->GetProfile());
 
     worker->setSourcePaths(_inputque);
     worker->setDestinationPaths(_outputque);

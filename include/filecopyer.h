@@ -7,6 +7,14 @@
 #include <QFileInfo>
 #include <QVector>
 #include <QThread>
+#include <profile.h>
+#include <crypto/blockcipher.h>
+#include <crypto/aes.h>
+
+enum tENCRYPT_DECRYPT
+{
+    ENCRYPT, DECRYPT
+};
 
 class FileCopyer : public QObject
 {
@@ -20,8 +28,10 @@ class FileCopyer : public QObject
     QVector<QString> src, dst;
     qint64 _chunk;
 
+    encryptor::tPROFILE _prof;
+
 public:
-    explicit FileCopyer(QThread*);
+    explicit FileCopyer(QThread*, encryptor::tPROFILE*, QString* pw, tENCRYPT_DECRYPT);
     virtual ~FileCopyer();
     qint64 chunkSize() const { return _chunk; }
 
