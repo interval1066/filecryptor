@@ -7,28 +7,15 @@ FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* 
     setChunkSize(DEFAULT_CHUNK_SIZE);
     QObject::connect(_thread, &QThread::started, this, &FileCopyer::copy);
 
+    uint8_t* initializationVector;
+    std::string textInitializationVector;
+
     QObject::connect(this, &FileCopyer::finished, _thread, &QThread::quit);
     QObject::connect(this, &FileCopyer::finished, this, &FileCopyer::deleteLater);
     QObject::connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
 
     if(profile->_mode == encryptor::MODE_ECB) {
-        try
-        {
-            if (!textInitializationVector.empty())
-            {
-                initializationVector = ivInput.keyRead(textInitializationVector);
-            }
-            else
-            {
-                initializationVector = ivInput.keyRead();
-            }
-        }
-        catch(const std::exception & e)
-        {
-            std::cerr << e.what() << '\n';
-            exit(1);
-        }
-
+        crypto::BlockCipher* algorithm = new crypto::AES(keyBytes, keyByteSize);
     }
 
 }

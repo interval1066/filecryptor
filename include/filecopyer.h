@@ -31,7 +31,7 @@ class FileCopyer : public QObject
     encryptor::tPROFILE _prof;
 
 public:
-    explicit FileCopyer(QThread*, encryptor::tPROFILE*, QString* pw, tENCRYPT_DECRYPT);
+    explicit FileCopyer(QThread*, encryptor::tPROFILE*, QString*, tENCRYPT_DECRYPT);
     virtual ~FileCopyer();
     qint64 chunkSize() const { return _chunk; }
 

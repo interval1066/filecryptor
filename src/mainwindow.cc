@@ -1,4 +1,5 @@
-#include <include/mainwindow.h>
+#include <mainwindow.h>
+#include <filecopyer.h>
 #include <QHeaderView>
 #include <QFile>
 #include <QStandardPaths>
@@ -275,7 +276,7 @@ void
 MainWindow::processFiles(QString& pw, tENCRYPT_DECRYPT dir)
 {
     auto local = new QThread;
-    auto worker = new FileCopyer(local, _profdialog->GetProfile());
+    auto worker = new FileCopyer(local, _profdialog->GetProfile(), &pw, dir);
 
     worker->setSourcePaths(_inputque);
     worker->setDestinationPaths(_outputque);
