@@ -7,6 +7,8 @@ Added a new settings manager class that takes an arbitrary settings object to en
 
 No, the code isn't commented. No, its not something I do with production/retail code.
 
+The app won't build right now as I'm in the process of integrating the encryption code with the gui, and wanted to preserve my progress so far. Sorry, not that you're relying on this app for anything useful. Hope not. Check back soon.
+
 ## To do:
 - [X] Profile serialization way too complex, implement as a facade pattern
 - [ ] Switch over or add cmake style build scripts
