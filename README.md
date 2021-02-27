@@ -13,7 +13,7 @@ The app won't build right now as I'm in the process of integrating the encryptio
 - [X] Profile serialization way too complex, implement as a facade pattern
 - [ ] Switch over or add cmake style build scripts
 - [X] Workout of profile action (still needs a little design work)
-- [ ] Adapt the encryption/decryption action to buffered file device (the current code just encrypts/decrypts a string)
+- [ ] Adapt the encryption/decryption action to buffered file device (in progress...)
 - [ ] Add menu accelerators
 - [X] Integration of high speed data copying Qt apis
 - [ ] Add progress dialog for processing thread
