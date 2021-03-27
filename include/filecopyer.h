@@ -10,11 +10,8 @@
 #include <profile.h>
 #include <crypto/blockcipher.h>
 #include <crypto/aes.h>
-
-enum tENCRYPT_DECRYPT
-{
-    ENCRYPT, DECRYPT
-};
+#include <crypto/operationmode.h>
+#include <consts.h>
 
 class FileCopyer : public QObject
 {
@@ -28,10 +25,14 @@ class FileCopyer : public QObject
     QVector<QString> src, dst;
     qint64 _chunk;
 
+    crypto::OperationMode* _mode;
+    uint8_t* _keyBytes;
+    unsigned long _keyByteSize;
+
     encryptor::tPROFILE _prof;
 
 public:
-    explicit FileCopyer(QThread*, encryptor::tPROFILE*, QString*, tENCRYPT_DECRYPT);
+    explicit FileCopyer(QThread*, encryptor::tPROFILE*, QString*, tENCRYPT_DECRYPT, crypto::OperationMode*);
     virtual ~FileCopyer();
     qint64 chunkSize() const { return _chunk; }
 

@@ -19,16 +19,7 @@
 #include <profile.h>
 #include <filecopyer.h>
 #include <crypto/rd128.h>
-
-enum tENCRYPT_DECRYPT
-{
-    ENCRYPT, DECRYPT
-};
-
-enum tFILEIO_TYPE
-{
-    OPEN, SAVE, SAVEAS
-};
+#include <consts.h>
 
 /*enum tSERIALIZE_SETTINGS_TYPE
 {

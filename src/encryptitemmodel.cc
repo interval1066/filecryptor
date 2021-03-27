@@ -15,6 +15,7 @@ EncryptItemModel::EncryptItemModel(QObject *parent)
     rootItem = this->invisibleRootItem();
     dirIcon = QApplication::style()->standardIcon(QStyle::SP_DirIcon);      //icon for directories
     fileIcon = QApplication::style()->standardIcon(QStyle::SP_FileIcon);    //icon for files
+
     videoIcon = QApplication::style()->standardIcon(QStyle::SP_MediaVolume);
     encryptedIcon = QIcon(":/res/data-encryption.png");
     //videoIcon = QIcon(":/res/png-video.png");
@@ -59,7 +60,8 @@ EncryptItemModel::createDirectoryItem(QString dirName, QStandardItem *parentItem
     QFileInfo folderName;
 
     QStandardItem* child;
-    subFolders = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);    //get all the sub folders
+    //get all the sub folders
+    subFolders = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     QMimeDatabase db;
 
     QBrush encryptedBrush, plainBrush;
@@ -68,10 +70,12 @@ EncryptItemModel::createDirectoryItem(QString dirName, QStandardItem *parentItem
 
     foreach(folderName, subFolders) {
         if(folderName.isFile()) {
-            child = new QStandardItem(videoIcon, folderName.fileName());                 //Append a file
+            child = new QStandardItem(videoIcon, folderName.fileName());
 
             child->setForeground(plainBrush);
-            child->setAccessibleDescription(folderName.filePath());                     //set actual path to item
+            //Append a file
+            child->setAccessibleDescription(folderName.filePath());
+            //set actual path to item
             //QMimeType type = db.mimeTypeForFile(folderName.filePath());
             //QString blah = type.name();
             //qDebug("%s", qUtf8Printable(blah));

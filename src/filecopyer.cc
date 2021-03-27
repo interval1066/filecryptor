@@ -1,7 +1,8 @@
 #include <QDebug>
 #include <filecopyer.h>
 
-FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir)
+FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir, crypto::OperationMode* mode) :
+    _mode(mode)
 {
     moveToThread(_thread);
     setChunkSize(DEFAULT_CHUNK_SIZE);
@@ -10,14 +11,16 @@ FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* 
     uint8_t* initializationVector;
     std::string textInitializationVector;
 
+    QByteArray ba = pw->toLocal8Bit();
+    _keyBytes = (uint8_t*)strdup(ba.constData());
+    _keyByteSize = sizeof(_keyBytes);
+
     QObject::connect(this, &FileCopyer::finished, _thread, &QThread::quit);
     QObject::connect(this, &FileCopyer::finished, this, &FileCopyer::deleteLater);
     QObject::connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
 
-    if(profile->_mode == encryptor::MODE_ECB) {
-        crypto::BlockCipher* algorithm = new crypto::AES(keyBytes, keyByteSize);
-    }
-
+    if(profile->_mode == encryptor::MODE_ECB)
+        crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
 }
 
 FileCopyer::~FileCopyer() { }
@@ -69,7 +72,7 @@ void FileCopyer::copy()
         while (fSize) {
             const auto data = srcFile.read(chunkSize());
 
-            crypto::BlockCipher* algorithm = new crypto::AES(keyBytes, keyByteSize);
+            crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
 
             const auto _written = dstFile.write(data);
             if (data.size() == _written) {

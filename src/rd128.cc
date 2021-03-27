@@ -39,49 +39,49 @@ RD128::I(uint32_t x, uint32_t y, uint32_t z)
 }
 
 void
-RD128::FF(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::FF(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + F(b, c, d) + X[k]), s);
 }
 
 void
-RD128::GG(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::GG(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + G(b, c, d) + X[k] + 0x5a827999), s);
 }
 
 void
-RD128::HH(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::HH(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + H(b, c, d) + X[k] + 0x6ed9eba1), s);
 }
 
 void
-RD128::II(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::II(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + I(b, c, d) + X[k] + 0x8f1bbcdc), s);
 }
 
 void
-RD128::FFF(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::FFF(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + F(b, c, d) + X[k] + 0x00000000), s);
 }
 
 void
-RD128::GGG(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::GGG(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + G(b, c, d) + X[k] + 0x6d703ef3), s);
 }
 
 void
-RD128::HHH(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::HHH(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + H(b, c, d) + X[k] + 0x5c4dd124), s);
 }
 
 void
-RD128::III(uint32_t &a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
+RD128::III(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, unsigned int k, unsigned int s)
 {
     a = rotate_l((a + I(b, c, d) + X[k] + 0x50a28be6), s);
 }
@@ -155,7 +155,7 @@ RD128::decode(uint32_t* output, unsigned char input[], unsigned int len)
 }
 
 void
-RD128::encode(unsigned char *output, const uint32_t input[], unsigned int len)
+RD128::encode(unsigned char* output, const uint32_t input[], unsigned int len)
 {
     for (unsigned int i = 0, j = 0; j < len; i++, j += 4) {
         output[j] = input[i] & 0xff;

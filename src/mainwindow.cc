@@ -282,5 +282,4 @@ MainWindow::processFiles(QString& pw, tENCRYPT_DECRYPT dir)
     worker->setDestinationPaths(_outputque);
 
     local->start();
-
 }

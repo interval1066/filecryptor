@@ -23,6 +23,7 @@ SOURCES += \
 
 HEADERS += \
     include/aboutdlg.h \
+    include/consts.h \
     include/crypto/aes.h \
     include/crypto/aesconstants.h \
     include/crypto/blockcipher.h \
