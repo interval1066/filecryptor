@@ -7,7 +7,7 @@ Added a new settings manager class that takes an arbitrary settings object to en
 
 No, the code isn't commented. No, its not something I do with production/retail code.
 
-Due to unforseen circumstances I've been able to return to this and get it done, maybe. The thing that's been holding me back is lack of interest and the fact that QIODevice::readLine reads lines, of course. That's what its suppoed to do. But today I've had time to play around with the APIs and get it to read fixed record lengths from any file type (QIODevice::read(length) is the key), and get it to do what I want, read exact sizes of data, which is nessessary for the encryption code to work. Huzzah. I'm just not that familiar with the QT QIODevice apis. Yet. Getting there.
+Due to unforseen circumstances I've been able to return to this and get it done, maybe. The thing that's been holding me back is lack of interest and the fact that QIODevice::readLine reads lines, of course. That's what its supposed to do. But today I've had time to play around with the APIs and get it to read fixed record lengths from any file type (QIODevice::read(length) is the key), and get it to do what I want, read exact sizes of data, which is nessessary for the encryption code to work. Huzzah. I'm just not that familiar with the QT QIODevice apis. Yet. Getting there.
 
 ## To do:
 - [X] Profile serialization way too complex, implement as a facade pattern
