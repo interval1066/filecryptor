@@ -19,8 +19,8 @@ FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* 
     QObject::connect(this, &FileCopyer::finished, this, &FileCopyer::deleteLater);
     QObject::connect(_thread, &QThread::finished, _thread, &QThread::deleteLater);
 
-    if(profile->_mode == encryptor::MODE_ECB)
-        crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
+    //if(profile->_mode == encryptor::MODE_ECB)
+      //  crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
 }
 
 FileCopyer::~FileCopyer() { }
@@ -34,10 +34,11 @@ void FileCopyer::copy()
     }
 
     if (src.count() != dst.count()) {
-        qWarning() << QStringLiteral("source or destination paths doesn't match!");
+        qWarning() << QStringLiteral("source or destination paths don't match!");
         emit finished(false);
         return;
     }
+
 
     qint64 total = 0, written = 0;
     for (auto&& f : src)
@@ -67,12 +68,12 @@ void FileCopyer::copy()
             continue; // skip
         }
 
-        /* copy the content in portion of chunk size */
+        // copy the content in portion of chunk size
         qint64 fSize = srcFile.size();
         while (fSize) {
             const auto data = srcFile.read(chunkSize());
 
-            crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
+            //crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
 
             const auto _written = dstFile.write(data);
             if (data.size() == _written) {
