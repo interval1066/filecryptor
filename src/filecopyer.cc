@@ -1,18 +1,18 @@
 #include <QDebug>
 #include <filecopyer.h>
 
-FileCopyer::FileCopyer(QThread* _thread, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir, crypto::OperationMode* mode) :
-    _mode(mode)
+FileCopyer::FileCopyer(QThread* _thread/*, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir, crypto::OperationMode* mode*/) //:
+    //_mode(mode)
 {
     moveToThread(_thread);
     setChunkSize(DEFAULT_CHUNK_SIZE);
     QObject::connect(_thread, &QThread::started, this, &FileCopyer::copy);
 
-    uint8_t* initializationVector;
+    //uint8_t* initializationVector;
     std::string textInitializationVector;
 
-    QByteArray ba = pw->toLocal8Bit();
-    _keyBytes = (uint8_t*)strdup(ba.constData());
+    //QByteArray ba = pw->toLocal8Bit();
+    //_keyBytes = (uint8_t*)strdup(ba.constData());
     _keyByteSize = sizeof(_keyBytes);
 
     QObject::connect(this, &FileCopyer::finished, _thread, &QThread::quit);
@@ -27,6 +27,7 @@ FileCopyer::~FileCopyer() { }
 
 void FileCopyer::copy()
 {
+    qint64 bufSize = 1024;
     if (src.isEmpty() || dst.isEmpty()) {
         qWarning() << QStringLiteral("source or destination paths are empty!");
         emit finished(false);
@@ -38,7 +39,6 @@ void FileCopyer::copy()
         emit finished(false);
         return;
     }
-
 
     qint64 total = 0, written = 0;
     for (auto&& f : src)

@@ -276,7 +276,7 @@ void
 MainWindow::processFiles(QString& pw, tENCRYPT_DECRYPT dir)
 {
     auto local = new QThread;
-    auto worker = new FileCopyer(local, _profdialog->GetProfile(), &pw, ENCRYPT);
+    auto worker = new FileCopyer(local/*, _profdialog->GetProfile(), &pw, ENCRYPT*/);
 
     worker->setSourcePaths(_inputque);
     worker->setDestinationPaths(_outputque);
