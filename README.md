@@ -9,7 +9,7 @@ No, the code isn't commented. No, its not something I do with production/retail 
 
 Due to unforseen circumstances I've been able to return to this and get it done, maybe. The thing that's been holding me back is lack of interest and the fact that QIODevice::readLine reads lines, of course. That's what its supposed to do. But today I've had time to play around with the APIs and get it to read fixed record lengths from any file type (QIODevice::read(length) is the key), and get it to do what I want, read exact sizes of data, which is nessessary for the encryption code to work. Huzzah. I'm just not that familiar with the QT QIODevice apis. Yet. Getting there.
 
-Today I tested the file copying code. Essentially this is a high-speed file copy app that transforms the new file into an encrypted form. And it does indeed copy fast. Now I need to actually add the encryption code to the process. But first I want to add the code that copies the file(s) to a target directory as specified in the config dialog. I know I'm working slow, but it takes time to do right and I have only so much time.
+Today I tested the file copying code. Essentially this is a high-speed file copy app that transforms the new file into an encrypted form. And it does indeed copy fast. Now I need to actually add the encryption code to the process. But first I want to add the code that copies the file(s) to a target directory as specified in the config dialog. I know I'm working slow, but it takes time to do right and I have only so much time. Also reset the head of this repo to earlier, working (better) code.
 
 ## To do:
 - [X] Profile serialization way too complex, implement as a facade pattern
