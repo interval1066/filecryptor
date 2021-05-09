@@ -8,6 +8,9 @@ INCLUDEPATH += include
 
 SOURCES += \
     src/aboutdlg.cpp \
+    src/aes256.cc \
+    src/aes256_base.cc \
+    src/aes256_prng.cc \
     src/encryptitemmodel.cc \
     src/filecopyer.cc \
     src/main.cc \
@@ -15,12 +18,19 @@ SOURCES += \
     src/profsdlg.cc \
     src/pwdlg.cc \
     src/rd128.cc \
+    src/s_box.cc \
     src/settings.cc
 
 HEADERS += \
     include/aboutdlg.h \
     include/consts.h \
+    include/crypto/aes256.h \
+    include/crypto/aes256_base.h \
+    include/crypto/aes256_prng.h \
+    include/crypto/byte_block.h \
+    include/crypto/padding_type.h \
     include/crypto/rd128.h \
+    include/crypto/s_box.h \
     include/encryptitemmodel.h \
     include/filecopyer.h \
     include/mainwindow.h \

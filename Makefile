@@ -53,6 +53,9 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = src/aboutdlg.cpp \
+		src/aes256.cc \
+		src/aes256_base.cc \
+		src/aes256_prng.cc \
 		src/encryptitemmodel.cc \
 		src/filecopyer.cc \
 		src/main.cc \
@@ -60,6 +63,7 @@ SOURCES       = src/aboutdlg.cpp \
 		src/profsdlg.cc \
 		src/pwdlg.cc \
 		src/rd128.cc \
+		src/s_box.cc \
 		src/settings.cc qrc_filrcrypt.cpp \
 		moc_aboutdlg.cpp \
 		moc_filecopyer.cpp \
@@ -67,6 +71,9 @@ SOURCES       = src/aboutdlg.cpp \
 		moc_profsdlg.cpp \
 		moc_pwdlg.cpp
 OBJECTS       = aboutdlg.o \
+		aes256.o \
+		aes256_base.o \
+		aes256_prng.o \
 		encryptitemmodel.o \
 		filecopyer.o \
 		main.o \
@@ -74,6 +81,7 @@ OBJECTS       = aboutdlg.o \
 		profsdlg.o \
 		pwdlg.o \
 		rd128.o \
+		s_box.o \
 		settings.o \
 		qrc_filrcrypt.o \
 		moc_aboutdlg.o \
@@ -141,6 +149,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -161,7 +170,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		filecrpt.pro include/aboutdlg.h \
 		include/consts.h \
+		include/crypto/aes256.h \
+		include/crypto/aes256_base.h \
+		include/crypto/aes256_prng.h \
+		include/crypto/byte_block.h \
+		include/crypto/padding_type.h \
 		include/crypto/rd128.h \
+		include/crypto/s_box.h \
 		include/encryptitemmodel.h \
 		include/filecopyer.h \
 		include/mainwindow.h \
@@ -169,6 +184,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		include/profsdlg.h \
 		include/pwdlg.h \
 		include/settings.h src/aboutdlg.cpp \
+		src/aes256.cc \
+		src/aes256_base.cc \
+		src/aes256_prng.cc \
 		src/encryptitemmodel.cc \
 		src/filecopyer.cc \
 		src/main.cc \
@@ -176,6 +194,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/profsdlg.cc \
 		src/pwdlg.cc \
 		src/rd128.cc \
+		src/s_box.cc \
 		src/settings.cc
 QMAKE_TARGET  = filecrypt
 DESTDIR       = 
@@ -248,6 +267,7 @@ Makefile: filecrpt.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.con
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -329,6 +349,7 @@ Makefile: filecrpt.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.con
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -365,8 +386,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents filrcrypt.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/aboutdlg.h include/consts.h include/crypto/rd128.h include/encryptitemmodel.h include/filecopyer.h include/mainwindow.h include/profile.h include/profsdlg.h include/pwdlg.h include/settings.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/aboutdlg.cpp src/encryptitemmodel.cc src/filecopyer.cc src/main.cc src/mainwindow.cc src/profsdlg.cc src/pwdlg.cc src/rd128.cc src/settings.cc $(DISTDIR)/
+	$(COPY_FILE) --parents include/aboutdlg.h include/consts.h include/crypto/aes256.h include/crypto/aes256_base.h include/crypto/aes256_prng.h include/crypto/byte_block.h include/crypto/padding_type.h include/crypto/rd128.h include/crypto/s_box.h include/encryptitemmodel.h include/filecopyer.h include/mainwindow.h include/profile.h include/profsdlg.h include/pwdlg.h include/settings.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/aboutdlg.cpp src/aes256.cc src/aes256_base.cc src/aes256_prng.cc src/encryptitemmodel.cc src/filecopyer.cc src/main.cc src/mainwindow.cc src/profsdlg.cc src/pwdlg.cc src/rd128.cc src/s_box.cc src/settings.cc $(DISTDIR)/
 	$(COPY_FILE) --parents include/aboutdlg.ui $(DISTDIR)/
 
 
@@ -472,6 +493,27 @@ aboutdlg.o: src/aboutdlg.cpp include/aboutdlg.h \
 		ui_aboutdlg.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aboutdlg.o src/aboutdlg.cpp
 
+aes256.o: src/aes256.cc include/crypto/aes256.h \
+		include/crypto/aes256_base.h \
+		include/crypto/byte_block.h \
+		include/crypto/padding_type.h \
+		include/crypto/s_box.h \
+		include/crypto/aes256_prng.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aes256.o src/aes256.cc
+
+aes256_base.o: src/aes256_base.cc include/crypto/aes256_base.h \
+		include/crypto/byte_block.h \
+		include/crypto/padding_type.h \
+		include/crypto/s_box.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aes256_base.o src/aes256_base.cc
+
+aes256_prng.o: src/aes256_prng.cc include/crypto/aes256_prng.h \
+		include/crypto/aes256_base.h \
+		include/crypto/byte_block.h \
+		include/crypto/padding_type.h \
+		include/crypto/s_box.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aes256_prng.o src/aes256_prng.cc
+
 encryptitemmodel.o: src/encryptitemmodel.cc include/encryptitemmodel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o encryptitemmodel.o src/encryptitemmodel.cc
 
@@ -515,6 +557,9 @@ pwdlg.o: src/pwdlg.cc include/pwdlg.h \
 
 rd128.o: src/rd128.cc include/crypto/rd128.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o rd128.o src/rd128.cc
+
+s_box.o: src/s_box.cc include/crypto/s_box.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o s_box.o src/s_box.cc
 
 settings.o: src/settings.cc include/settings.h \
 		include/profile.h
