@@ -197,7 +197,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		src/s_box.cc \
 		src/settings.cc
 QMAKE_TARGET  = filecrypt
-DESTDIR       = 
+DESTDIR       =
 TARGET        = filecrypt
 
 
