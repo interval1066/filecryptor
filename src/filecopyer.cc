@@ -27,7 +27,6 @@ FileCopyer::~FileCopyer() { }
 
 void FileCopyer::copy()
 {
-    qint64 bufSize = 1024;
     if (src.isEmpty() || dst.isEmpty()) {
         qWarning() << QStringLiteral("source or destination paths are empty!");
         emit finished(false);
@@ -46,11 +45,13 @@ void FileCopyer::copy()
     qInfo() << QStringLiteral("%1 bytes should be write in total").arg(total);
 
     int indx = 0;
-    qInfo() << QStringLiteral("writing with chunk size of %1 byte").arg(chunkSize());
+    //qInfo() << QStringLiteral("writing with chunk size of %1 byte").arg(chunkSize());
     while (indx < src.count()) {
+
         const auto dstPath = dst.at(indx);
         QFile srcFile(src.at(indx));
         QFile dstFile(dstPath);
+
         if (QFile::exists(dstPath)) {
             qInfo() << QStringLiteral("file %1 alreasy exists, overwriting...").arg(dstPath);
             QFile::remove(dstPath);
@@ -72,14 +73,15 @@ void FileCopyer::copy()
         qint64 fSize = srcFile.size();
         while (fSize) {
             const auto data = srcFile.read(chunkSize());
-
-            //crypto::BlockCipher* algorithm = new crypto::AES(_keyBytes, _keyByteSize);
+            //qDebug() << "-----> " << data.size();
 
             const auto _written = dstFile.write(data);
             if (data.size() == _written) {
                 written += _written;
+
                 fSize -= data.size();
                 emit copyProgress(written, total);
+                //qDebug() << dstFile.fileName();
             }
             else {
                 qWarning() << QStringLiteral("failed to write to %1 (error:%2)").arg(dstFile.fileName()).arg(dstFile.errorString());

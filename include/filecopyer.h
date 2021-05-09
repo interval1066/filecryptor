@@ -8,9 +8,6 @@
 #include <QVector>
 #include <QThread>
 #include <profile.h>
-#include <crypto/blockcipher.h>
-#include <crypto/aes.h>
-#include <crypto/operationmode.h>
 #include <consts.h>
 
 class FileCopyer : public QObject
@@ -25,7 +22,6 @@ class FileCopyer : public QObject
     QVector<QString> src, dst;
     qint64 _chunk;
 
-    crypto::OperationMode* _mode;
     uint8_t* _keyBytes;
     unsigned long _keyByteSize;
 

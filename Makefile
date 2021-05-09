@@ -53,14 +53,10 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = src/aboutdlg.cpp \
-		src/aes.cc \
-		src/cbcmode.cc \
-		src/ecbmode.cc \
 		src/encryptitemmodel.cc \
 		src/filecopyer.cc \
 		src/main.cc \
 		src/mainwindow.cc \
-		src/operationmode.cc \
 		src/profsdlg.cc \
 		src/pwdlg.cc \
 		src/rd128.cc \
@@ -71,14 +67,10 @@ SOURCES       = src/aboutdlg.cpp \
 		moc_profsdlg.cpp \
 		moc_pwdlg.cpp
 OBJECTS       = aboutdlg.o \
-		aes.o \
-		cbcmode.o \
-		ecbmode.o \
 		encryptitemmodel.o \
 		filecopyer.o \
 		main.o \
 		mainwindow.o \
-		operationmode.o \
 		profsdlg.o \
 		pwdlg.o \
 		rd128.o \
@@ -169,17 +161,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		filecrpt.pro include/aboutdlg.h \
 		include/consts.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/blockcipher.h \
-		include/crypto/cbcmode.h \
-		include/crypto/ecbmode.h \
-		include/crypto/hexinput.h \
-		include/crypto/invalidargumentexception.h \
-		include/crypto/invalidkeyexception.h \
-		include/crypto/operationmode.h \
 		include/crypto/rd128.h \
-		include/crypto/utilities.h \
 		include/encryptitemmodel.h \
 		include/filecopyer.h \
 		include/mainwindow.h \
@@ -187,14 +169,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		include/profsdlg.h \
 		include/pwdlg.h \
 		include/settings.h src/aboutdlg.cpp \
-		src/aes.cc \
-		src/cbcmode.cc \
-		src/ecbmode.cc \
 		src/encryptitemmodel.cc \
 		src/filecopyer.cc \
 		src/main.cc \
 		src/mainwindow.cc \
-		src/operationmode.cc \
 		src/profsdlg.cc \
 		src/pwdlg.cc \
 		src/rd128.cc \
@@ -387,8 +365,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents filrcrypt.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents include/aboutdlg.h include/consts.h include/crypto/aes.h include/crypto/aesconstants.h include/crypto/blockcipher.h include/crypto/cbcmode.h include/crypto/ecbmode.h include/crypto/hexinput.h include/crypto/invalidargumentexception.h include/crypto/invalidkeyexception.h include/crypto/operationmode.h include/crypto/rd128.h include/crypto/utilities.h include/encryptitemmodel.h include/filecopyer.h include/mainwindow.h include/profile.h include/profsdlg.h include/pwdlg.h include/settings.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/aboutdlg.cpp src/aes.cc src/cbcmode.cc src/ecbmode.cc src/encryptitemmodel.cc src/filecopyer.cc src/main.cc src/mainwindow.cc src/operationmode.cc src/profsdlg.cc src/pwdlg.cc src/rd128.cc src/settings.cc $(DISTDIR)/
+	$(COPY_FILE) --parents include/aboutdlg.h include/consts.h include/crypto/rd128.h include/encryptitemmodel.h include/filecopyer.h include/mainwindow.h include/profile.h include/profsdlg.h include/pwdlg.h include/settings.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/aboutdlg.cpp src/encryptitemmodel.cc src/filecopyer.cc src/main.cc src/mainwindow.cc src/profsdlg.cc src/pwdlg.cc src/rd128.cc src/settings.cc $(DISTDIR)/
 	$(COPY_FILE) --parents include/aboutdlg.ui $(DISTDIR)/
 
 
@@ -438,10 +416,6 @@ moc_aboutdlg.cpp: include/aboutdlg.h \
 
 moc_filecopyer.cpp: include/filecopyer.h \
 		include/profile.h \
-		include/crypto/blockcipher.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/operationmode.h \
 		include/consts.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -455,10 +429,6 @@ moc_mainwindow.cpp: include/mainwindow.h \
 		include/settings.h \
 		include/profile.h \
 		include/filecopyer.h \
-		include/crypto/blockcipher.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/operationmode.h \
 		include/consts.h \
 		include/crypto/rd128.h \
 		moc_predefs.h \
@@ -502,30 +472,11 @@ aboutdlg.o: src/aboutdlg.cpp include/aboutdlg.h \
 		ui_aboutdlg.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aboutdlg.o src/aboutdlg.cpp
 
-aes.o: src/aes.cc include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/blockcipher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o aes.o src/aes.cc
-
-cbcmode.o: src/cbcmode.cc include/crypto/cbcmode.h \
-		include/crypto/operationmode.h \
-		include/crypto/blockcipher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cbcmode.o src/cbcmode.cc
-
-ecbmode.o: src/ecbmode.cc include/crypto/ecbmode.h \
-		include/crypto/operationmode.h \
-		include/crypto/blockcipher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ecbmode.o src/ecbmode.cc
-
 encryptitemmodel.o: src/encryptitemmodel.cc include/encryptitemmodel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o encryptitemmodel.o src/encryptitemmodel.cc
 
 filecopyer.o: src/filecopyer.cc include/filecopyer.h \
 		include/profile.h \
-		include/crypto/blockcipher.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/operationmode.h \
 		include/consts.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o filecopyer.o src/filecopyer.cc
 
@@ -537,10 +488,6 @@ main.o: src/main.cc include/mainwindow.h \
 		include/settings.h \
 		include/profile.h \
 		include/filecopyer.h \
-		include/crypto/blockcipher.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/operationmode.h \
 		include/consts.h \
 		include/crypto/rd128.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cc
@@ -553,17 +500,9 @@ mainwindow.o: src/mainwindow.cc include/mainwindow.h \
 		include/settings.h \
 		include/profile.h \
 		include/filecopyer.h \
-		include/crypto/blockcipher.h \
-		include/crypto/aes.h \
-		include/crypto/aesconstants.h \
-		include/crypto/operationmode.h \
 		include/consts.h \
 		include/crypto/rd128.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o src/mainwindow.cc
-
-operationmode.o: src/operationmode.cc include/crypto/operationmode.h \
-		include/crypto/blockcipher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o operationmode.o src/operationmode.cc
 
 profsdlg.o: src/profsdlg.cc include/profsdlg.h \
 		include/settings.h \

@@ -9,6 +9,7 @@
 #include <QCoreApplication>
 #include <QObject>
 #include <QApplication>
+#include <crypto/rd128.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -108,7 +109,7 @@ MainWindow::onCustomContextMenu(const QPoint& point)
 }
 
 void
-MainWindow::encryptSelected(QList<QModelIndex>& list)
+MainWindow::encryptSelected(QList<QModelIndex>& list, QFile* dir)
 {
     _inputque.clear();
     _outputque.clear();
@@ -126,6 +127,10 @@ MainWindow::encryptSelected(QList<QModelIndex>& list)
 
             if(!file.isDir()) {
                 _inputque.push_back(file.absoluteFilePath());
+                if(dir) {
+                    qDebug() << "CHange directory";
+                }
+
                 _outputque.push_back(file.absoluteFilePath().append(".enc"));
             }
         }

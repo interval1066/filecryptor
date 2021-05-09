@@ -337,3 +337,4 @@ RD128::hexdigest()
 
     return QString(buf);
 }
+

@@ -1,6 +1,6 @@
 # Prerequisites
 *.d
-*.user
+*.pro.user.*
 
 # Compiled Object files
 *.slo

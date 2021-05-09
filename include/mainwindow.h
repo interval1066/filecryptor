@@ -60,7 +60,7 @@ class MainWindow : public QMainWindow
     std::unique_ptr<PWDialog> _pwdlg;
     std::unique_ptr<AboutDlg> _about;
 
-    void encryptSelected(QList<QModelIndex>&);
+    void encryptSelected(QList<QModelIndex>&, QFile* dir = nullptr);
     void clearSelected(void);
     void decryptSelected(QList<QModelIndex>&);
 
