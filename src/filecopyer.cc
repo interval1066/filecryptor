@@ -1,8 +1,9 @@
 #include <QDebug>
 #include <filecopyer.h>
+#include <crypto/aes256.h>
 
-FileCopyer::FileCopyer(QThread* _thread/*, encryptor::tPROFILE* profile, QString* pw, tENCRYPT_DECRYPT dir, crypto::OperationMode* mode*/) //:
-    //_mode(mode)
+FileCopyer::FileCopyer(QThread* _thread, QString& pw) //:
+    : _keyBytes(pw)
 {
     moveToThread(_thread);
     setChunkSize(DEFAULT_CHUNK_SIZE);
@@ -68,12 +69,11 @@ void FileCopyer::copy()
             indx++;
             continue; // skip
         }
-
+        qInfo() << srcFile.fileName() << " " << dstFile.fileName();
         // copy the content in portion of chunk size
-        qint64 fSize = srcFile.size();
+        /*qint64 fSize = srcFile.size();
         while (fSize) {
             const auto data = srcFile.read(chunkSize());
-            //qDebug() << "-----> " << data.size();
 
             const auto _written = dstFile.write(data);
             if (data.size() == _written) {
@@ -88,7 +88,7 @@ void FileCopyer::copy()
                 //fSize = 0;
                 break; // skip this operation
             }
-        }
+        }*/
 
         srcFile.close();
         dstFile.close();

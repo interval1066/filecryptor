@@ -22,13 +22,13 @@ class FileCopyer : public QObject
     QVector<QString> src, dst;
     qint64 _chunk;
 
-    uint8_t* _keyBytes;
+    QString& _keyBytes;
     unsigned long _keyByteSize;
 
     encryptor::tPROFILE _prof;
 
 public:
-    explicit FileCopyer(QThread*/*, encryptor::tPROFILE*, QString*, tENCRYPT_DECRYPT, crypto::OperationMode*/);
+    explicit FileCopyer(QThread*, QString&);
     virtual ~FileCopyer();
     qint64 chunkSize() const { return _chunk; }
 

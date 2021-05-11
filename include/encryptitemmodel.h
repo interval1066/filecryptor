@@ -3,6 +3,7 @@
 
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include <QFileSystemWatcher>
 
 class EncryptItemModel : public QStandardItemModel
 {
@@ -11,6 +12,7 @@ class EncryptItemModel : public QStandardItemModel
     QIcon fileIcon;
     QIcon encryptedIcon;
     QIcon videoIcon;
+    QFileSystemWatcher watcher;
 
 public:
     EncryptItemModel(QObject* parent = nullptr);
