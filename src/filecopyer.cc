@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <filecopyer.h>
 #include <crypto/aes256.h>
+#include <crypto/byte_block.h>
 
 FileCopyer::FileCopyer(QThread* _thread, QString& pw) //:
     : _keyBytes(pw)
@@ -45,6 +46,7 @@ void FileCopyer::copy()
         total += QFileInfo(f).size();
     qInfo() << QStringLiteral("%1 bytes should be write in total").arg(total);
 
+    crypto::AES256 aes(_keyBytes.toUtf8().constData());
     int indx = 0;
     //qInfo() << QStringLiteral("writing with chunk size of %1 byte").arg(chunkSize());
     while (indx < src.count()) {
@@ -70,6 +72,7 @@ void FileCopyer::copy()
             continue; // skip
         }
         qInfo() << srcFile.fileName() << " " << dstFile.fileName();
+
         // copy the content in portion of chunk size
         /*qint64 fSize = srcFile.size();
         while (fSize) {
