@@ -280,6 +280,7 @@ MainWindow::encryptAfter()
 void
 MainWindow::processFiles(QString& pw, tENCRYPT_DECRYPT dir)
 {
+    Q_UNUSED(dir)
     auto local = new QThread;
     auto worker = new FileCopyer(local, pw/*, _profdialog->GetProfile(), &pw, ENCRYPT*/);
 

@@ -9,6 +9,7 @@
 #include <QThread>
 #include <profile.h>
 #include <consts.h>
+#include <fstream>
 
 class FileCopyer : public QObject
 {

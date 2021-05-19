@@ -71,27 +71,11 @@ void FileCopyer::copy()
             indx++;
             continue; // skip
         }
-        qInfo() << srcFile.fileName() << " " << dstFile.fileName();
+        qInfo() << indx << " " << src.count();
+        std::ifstream ifs(srcFile.fileName().toStdString().c_str(), std::ifstream::in);
+        std::ofstream ofs(dstFile.fileName().toStdString().c_str(), std::ifstream::out);
 
-        // copy the content in portion of chunk size
-        /*qint64 fSize = srcFile.size();
-        while (fSize) {
-            const auto data = srcFile.read(chunkSize());
-
-            const auto _written = dstFile.write(data);
-            if (data.size() == _written) {
-                written += _written;
-
-                fSize -= data.size();
-                emit copyProgress(written, total);
-                //qDebug() << dstFile.fileName();
-            }
-            else {
-                qWarning() << QStringLiteral("failed to write to %1 (error:%2)").arg(dstFile.fileName()).arg(dstFile.errorString());
-                //fSize = 0;
-                break; // skip this operation
-            }
-        }*/
+        aes.encrypt(ifs, ofs);
 
         srcFile.close();
         dstFile.close();
